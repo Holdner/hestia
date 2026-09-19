@@ -15,8 +15,8 @@
     )) do %>
   <% if leading? %><div class="shrink-0"><%= leading %></div><% end %>
   <div class="flex-1 min-w-0">
-    <% if title? %><p class="text-base <%= @active ? "font-semibold" : "font-medium" %> text-primary truncate"><%= title %></p><% end %>
-    <% if description? %><p class="text-sm text-secondary truncate"><%= description %></p><% end %>
+    <% if title? %><p class="<%= cn("text-base text-primary", @active ? "font-semibold" : "font-medium", @truncate && "truncate") %>"><%= title %></p><% end %>
+    <% if description? %><p class="<%= cn("text-sm text-secondary", @truncate && "truncate") %>"><%= description %></p><% end %>
   </div>
   <% if trailing? %><div class="shrink-0"><%= trailing %></div><% end %>
 <% end %>
