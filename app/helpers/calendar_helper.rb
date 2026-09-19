@@ -4,7 +4,7 @@ module CalendarHelper
   def event_color_class(color) = Swatch.chip_classes(color)
   def frequency_label(frequency) = t("calendar.frequencies.#{frequency}", default: frequency)
   def frequency_options = CalendarEvent::FREQUENCIES.map { |frequency| [ frequency_label(frequency), frequency ] }
-  def color_options = CalendarEvent::COLORS.map { |color| [ color.capitalize, color ] }
+  def color_options = CalendarEvent::COLORS.map { |color| [ t("documents.colors.#{color}"), color ] }
   def month_label(date) = "#{t("calendar.months")[date.month - 1]} #{date.year}"
   def weekday_labels = t("calendar.weekdays")
   def event_type_label(type) = type.present? ? t("calendar_events.event_types.#{type}", default: type.humanize) : nil

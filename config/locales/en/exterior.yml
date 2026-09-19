@@ -21,6 +21,7 @@ en:
       uv: "UV"
     action_types:
       nettoyage_filtre: "Filter cleaning"
+      traitement_choc: "Shock treatment"
       hivernage: "Winterizing"
       mise_en_route: "Startup"
       autre: "Other"

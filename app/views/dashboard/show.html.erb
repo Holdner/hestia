@@ -139,7 +139,7 @@
     </section>
   <% end %>
 
-  <section class="flex gap-3">
+  <section class="flex flex-wrap gap-3">
     <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: new_household_path)) { t(".create_household") } %>
     <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: new_membership_path)) { t(".join_household") } %>
   </section>

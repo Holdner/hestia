@@ -3,7 +3,7 @@
 <div class="mt-10 max-w-5xl mx-auto px-4">
   <div class="mb-4"><%= module_breadcrumb(:gifts, [ @list.name, nil ], module_path: gift_lists_path) %></div>
 
-  <header class="mb-4 flex items-center justify-between">
+  <header class="mb-4 flex flex-wrap items-center justify-between gap-3">
     <h1 class="flex items-center gap-2 text-2xl font-semibold">
       <%= lucide_icon("gift", css_class: "size-6") %> <%= @list.name %>
       <span class="text-sm text-subdued">(<%= perspective_label(@list.perspective) %><%= " · #{@list.theme}" if @list.theme.present? %>)</span>
@@ -55,9 +55,9 @@
       <% end %>
     </div>
     <% if @ideas.any? %>
-      <ul class="mb-3 space-y-2">
+      <ul class="mb-3 flex flex-col divide-y divide-primary rounded-lg border border-primary">
         <% @ideas.each do |idea| %>
-          <li class="rounded-lg border border-primary px-3 py-2 text-sm">
+          <li class="px-3 py-2 text-sm">
             <div class="flex items-center justify-between gap-2">
               <span>
                 <span class="font-medium"><%= idea.name %></span>
@@ -71,7 +71,7 @@
                 <% end %>
                 <%= form_with url: gift_list_gift_idea_path(@list, idea), method: :delete, class: "inline",
                       data: { turbo_confirm: t(".delete_idea_confirm") } do %>
-                  <%= render(Ui::ButtonComponent.new(type: "submit", variant: :ghost, size: :icon, html_options: { "aria-label": t(".delete_idea") })) { "×" } %>
+                  <%= render(Ui::ButtonComponent.new(type: "submit", variant: :ghost, size: :icon, html_options: { "aria-label": t(".delete_idea") })) { lucide_icon("x", css_class: "size-4") } %>
                 <% end %>
               </div>
             </div>

@@ -21,6 +21,7 @@ fr:
       uv: "UV"
     action_types:
       nettoyage_filtre: "Nettoyage filtre"
+      traitement_choc: "Traitement choc"
       hivernage: "Hivernage"
       mise_en_route: "Mise en route"
       autre: "Autre"

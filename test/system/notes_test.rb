@@ -43,11 +43,12 @@ class NotesTest < ApplicationSystemTestCase
     visit notes_path
 
     within "##{ActionView::RecordIdentifier.dom_id(note)}" do
-      click_element(find(:button, "→ Task"))
+      open_note_menu(note)
+      submit_button_to "Convert to task"
     end
-    assert_dialog_open "dialog[role='alertdialog'][data-state='open']"
-    within "dialog[data-state='open']" do
-      submit_button_to "Convert"
+    assert_dialog_open "dialog#global_confirm_dialog[data-state='open']"
+    within "dialog#global_confirm_dialog" do
+      click_element(find(:button, "Convert"))
     end
 
     assert_text note.title # page reloaded back to the notes index
@@ -60,13 +61,22 @@ class NotesTest < ApplicationSystemTestCase
     visit notes_path
 
     within "##{ActionView::RecordIdentifier.dom_id(note)}" do
-      click_element(find(:button, "Delete"))
-    end
-    assert_dialog_open "dialog[role='alertdialog'][data-state='open']"
-    within "dialog[data-state='open']" do
+      open_note_menu(note)
       submit_button_to "Delete"
+    end
+    assert_dialog_open "dialog#global_confirm_dialog[data-state='open']"
+    within "dialog#global_confirm_dialog" do
+      click_element(find(:button, "Delete"))
     end
 
     assert_no_text note.title
   end
+
+  private
+    # The card's secondary actions live behind « … »; the trigger is named by
+    # its aria-label, which Capybara's :button selector does not read.
+    def open_note_menu(note)
+      click_element(find("button[aria-label='#{I18n.t("notes.note.more_actions_aria", title: note.title)}']"))
+      assert_selector "[role='menu'][data-state='open']"
+    end
 end

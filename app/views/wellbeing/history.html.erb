@@ -14,7 +14,7 @@
       <% if @weight_entries.any? %>
         <ul class="mb-4 divide-y divide-primary text-sm">
           <% @weight_entries.each do |entry| %>
-            <li class="py-2"><%= l(entry.recorded_on, format: :numeric) %> — <%= entry.weight %> kg</li>
+            <li class="py-2"><%= l(entry.recorded_on, format: :numeric) %> — <%= decimal(entry.weight, precision: 1) %> kg</li>
           <% end %>
         </ul>
         <% if @weight_total_pages > 1 %>

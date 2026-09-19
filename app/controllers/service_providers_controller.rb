@@ -8,7 +8,7 @@ class ServiceProvidersController < ApplicationController
     @type = Current.household.service_provider_types.find_by(id: params[:type_id]) if params[:type_id].present?
     @types = Current.household.service_provider_types.order(:name)
 
-    providers = Current.household.service_providers.ordered.includes(:service_provider_type)
+    providers = Current.household.service_providers.ordered.includes(:service_provider_type, :linked_address)
     providers = providers.where(service_provider_type_id: @type.id) if @type
     providers = providers.where("name ILIKE ?", "%#{@query}%") if @query.present?
     @providers = providers

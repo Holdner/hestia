@@ -55,24 +55,21 @@
     <div class="mt-4">
       <%= render(Ui::TabsComponent.new(default: "all")) do |tabs| %>
         <% tabs.with_tab(label: t(".all_locations"), value: "all") do %>
-          <div id="fridge_items" class="mt-3 space-y-2">
-            <% if @fridge_items.any? %>
-              <%= render @fridge_items %>
-            <% else %>
-              <%= render(Ui::EmptyComponent.new) { |empty| empty.with_description { @query.present? ? t(".no_items_for_search") : t(".no_items") } } %>
-            <% end %>
-          </div>
+          <%# Hairlines, not a stack of cards (rule 3). One line so :empty hides the
+              outline while the list is empty; a broadcast append fills it. %>
+          <div id="fridge_items" class="mt-3 flex flex-col divide-y divide-primary rounded-lg border border-primary empty:hidden"><%= render @fridge_items %></div>
+          <% if @fridge_items.empty? %>
+            <div class="mt-3"><%= render(Ui::EmptyComponent.new) { |empty| empty.with_description { @query.present? ? t(".no_items_for_search") : t(".no_items") } } %></div>
+          <% end %>
         <% end %>
         <% FridgeItem::LOCATIONS.each do |location| %>
           <% items_for_location = @fridge_items.select { |item| item.location == location } %>
           <% tabs.with_tab(label: location_label(location), value: location) do %>
-            <div class="mt-3 space-y-2">
-              <% if items_for_location.any? %>
-                <%= render items_for_location %>
-              <% else %>
-                <%= render(Ui::EmptyComponent.new) { |empty| empty.with_description { t(".no_items") } } %>
-              <% end %>
-            </div>
+            <% if items_for_location.any? %>
+              <div class="mt-3 flex flex-col divide-y divide-primary rounded-lg border border-primary"><%= render items_for_location %></div>
+            <% else %>
+              <div class="mt-3"><%= render(Ui::EmptyComponent.new) { |empty| empty.with_description { t(".no_items") } } %></div>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
@@ -89,13 +86,10 @@
       <% end %>
     </div>
 
-    <div id="prepared_dishes" class="mt-4 space-y-2">
-      <% if @prepared_dishes.any? %>
-        <%= render @prepared_dishes %>
-      <% else %>
-        <%= render(Ui::EmptyComponent.new) { |empty| empty.with_description { t(".no_dishes") } } %>
-      <% end %>
-    </div>
+    <div id="prepared_dishes" class="mt-4 flex flex-col divide-y divide-primary rounded-lg border border-primary empty:hidden"><%= render @prepared_dishes %></div>
+    <% if @prepared_dishes.empty? %>
+      <div class="mt-4"><%= render(Ui::EmptyComponent.new) { |empty| empty.with_description { t(".no_dishes") } } %></div>
+    <% end %>
   </section>
 
 </div>

@@ -1,5 +1,5 @@
 <% show_cellar ||= false %>
-<%= tag.div id: dom_id(bottle), class: "rounded-lg border border-primary #{"opacity-50" unless bottle.in_stock}" do %>
+<%= tag.div id: dom_id(bottle), class: ("opacity-50" unless bottle.in_stock) do %>
   <%= render(Ui::ItemComponent.new) do |item| %>
     <% if bottle.photo.attached? %>
       <% item.with_leading do %>

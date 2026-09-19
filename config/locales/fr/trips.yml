@@ -23,6 +23,7 @@ fr:
       shopping_list_placeholder: "Liste (ex. « chalet »)"
       add: "Ajouter"
       shared_expenses_heading: "Dépenses partagées"
+      shared_expenses_total: "Total dépensé"
       view_shared_expenses_link: "Voir les dépenses partagées"
       track_expenses_button: "Suivre les dépenses partagées de ce voyage"
       notes_empty: "Aucune note pour l'instant."

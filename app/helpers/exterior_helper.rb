@@ -1,5 +1,5 @@
 module ExteriorHelper
-  ACTION_TYPES = %w[nettoyage_filtre hivernage mise_en_route autre].freeze
+  ACTION_TYPES = %w[nettoyage_filtre traitement_choc hivernage mise_en_route autre].freeze
 
   def treatment_label(type) = t("exterior.treatments.#{type}", default: type)
   def treatment_options = Pool::TREATMENT_TYPES.map { |type| [ treatment_label(type), type ] }

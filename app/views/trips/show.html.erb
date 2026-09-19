@@ -3,7 +3,7 @@
 <div class="mt-10 max-w-5xl mx-auto px-4">
   <div class="mb-4"><%= module_breadcrumb(:trips, [ @trip.name, nil ], module_path: trips_path) %></div>
 
-  <header class="mb-6 flex items-start justify-between">
+  <header class="mb-6 flex flex-wrap items-start justify-between gap-3">
     <div>
       <h1 class="flex items-center gap-2 text-2xl font-semibold"><%= lucide_icon("luggage", css_class: "size-6") %> <%= @trip.name %></h1>
       <% if @trip.starts_on %><p class="text-sm text-secondary"><%= l(@trip.starts_on, format: :numeric) %><%= " → #{l(@trip.ends_on, format: :numeric)}" if @trip.ends_on %></p><% end %>
@@ -26,10 +26,11 @@
       <h2 class="mb-2 flex items-center gap-1.5 font-medium"><%= lucide_icon("handshake", css_class: "size-5") %> <%= t(".shared_expenses_heading") %></h2>
       <%= render(Ui::CardComponent.new) do %>
         <% if @trip.shared_project %>
-          <p class="text-sm">
-            <%= link_to t(".view_shared_expenses_link"), shared_project_path(@trip.shared_project), class: "underline" %>
-            <span class="text-secondary">— <%= number_to_currency(@trip.shared_project.total_spent, unit: "€", format: "%n %u") %></span>
-          </p>
+          <div class="flex flex-wrap items-end justify-between gap-3">
+            <%= render Ui::StatComponent.new(label: t(".shared_expenses_total"),
+                  value: number_to_currency(@trip.shared_project.total_spent, unit: "€", format: "%n %u")) %>
+            <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: shared_project_path(@trip.shared_project))) { t(".view_shared_expenses_link") } %>
+          </div>
         <% else %>
           <%= form_with url: track_expenses_trip_path(@trip), method: :post do %>
             <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, type: "submit")) do %>

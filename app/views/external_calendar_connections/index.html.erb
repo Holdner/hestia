@@ -19,7 +19,7 @@
       <div class="divide-y divide-primary rounded-lg border border-primary text-sm">
         <% @connections.each do |connection| %>
           <%= render(Ui::ItemComponent.new) do |item| %>
-            <% item.with_title { connection.provider.capitalize } %>
+            <% item.with_title { t(".providers.#{connection.provider}") } %>
             <% if connection.last_synced_at %>
               <% item.with_description { t(".last_synced_at", time: l(connection.last_synced_at, format: :long)) } %>
             <% end %>
@@ -28,7 +28,7 @@
                 <%= render(Ui::BadgeComponent.new(variant: connection.active? ? :success : :secondary)) { connection.active? ? t(".active") : t(".inactive") } %>
                 <%= form_with url: external_calendar_connection_path(connection), method: :delete,
                       data: { turbo_confirm: t(".disconnect_confirm") } do %>
-                  <%= render(Ui::ButtonComponent.new(type: "submit", variant: :destructive, size: :sm)) { t(".disconnect") } %>
+                  <%= render(Ui::ButtonComponent.new(type: "submit", variant: :ghost, size: :sm)) { t(".disconnect") } %>
                 <% end %>
               </div>
             <% end %>
@@ -41,7 +41,7 @@
   <div class="flex flex-wrap gap-2">
     <% ExternalCalendarConnection::PROVIDERS.each do |provider| %>
       <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: connect_external_calendar_connections_path(provider: provider))) do %>
-        <%= t(".connect_provider", provider: provider.capitalize) %>
+        <%= t(".connect_provider", provider: t(".providers.#{provider}")) %>
       <% end %>
     <% end %>
   </div>

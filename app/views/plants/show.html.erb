@@ -4,7 +4,7 @@
 <div class="mt-10 max-w-3xl mx-auto px-4">
   <div class="mb-4"><%= module_breadcrumb(:outdoor, [ @plant.name, nil ], module_path: exterior_path) %></div>
 
-  <header class="mb-6 flex items-start gap-4">
+  <header class="mb-6 flex flex-wrap items-start gap-4">
     <% if @plant.photo.attached? %>
       <%= render Ui::AvatarComponent.new(src: @plant.photo.variant(resize_to_fill: [ 64, 64 ]), alt: @plant.name) %>
     <% end %>
@@ -23,9 +23,11 @@
     <h2 class="mb-3 font-medium"><%= t(".tasks_heading") %></h2>
 
     <% if @care_tasks.any? %>
-      <div class="mb-6 space-y-3">
+      <%# Hairlines, and no red fill on an overdue task: its « En retard »
+          badge already says so (a status is text, never a fill). %>
+      <div class="mb-6 flex flex-col divide-y divide-primary rounded-lg border border-primary">
         <% @care_tasks.each do |task| %>
-          <%= tag.div class: "rounded-lg border p-3 #{task.overdue? ? "border-destructive bg-destructive/10" : "border-primary"}" do %>
+          <%= tag.div do %>
             <%= render(Ui::ItemComponent.new) do |item| %>
               <% item.with_title { care_type_label(task.care_type) } %>
               <% item.with_description do %>

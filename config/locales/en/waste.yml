@@ -36,7 +36,9 @@ en:
       add: "Add"
       series_title: "Recurring series"
       no_series: "No recurring series."
-      every_n_weeks: "every %{count} week(s)"
+      every_n_weeks:
+        one: "every week"
+        other: "every %{count} weeks"
       delete_series: "Delete series"
       delete_series_aria: "Delete the \"%{type}\" series"
       delete_series_confirm: "Delete this series and all its collections?"

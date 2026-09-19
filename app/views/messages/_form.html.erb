@@ -2,12 +2,17 @@
   <% if message.errors.any? %>
     <%= render(Ui::AlertComponent.new(variant: :destructive, class_name: "mb-2")) { message.errors.full_messages.to_sentence } %>
   <% end %>
-  <%= form_with model: [ conversation, conversation.messages.new ], url: conversation_messages_path(conversation), multipart: true, class: "flex items-end gap-2" do |form| %>
-    <div class="flex-1">
+  <%# The text keeps basis-60 and the attachment + send pair wraps under it
+      on a phone, where flex-1 had squeezed the textarea to one word. Same
+      shape as the circle composer (circle_posts/_form). %>
+  <%= form_with model: [ conversation, conversation.messages.new ], url: conversation_messages_path(conversation), multipart: true, class: "flex flex-wrap items-end gap-2" do |form| %>
+    <div class="min-w-0 grow basis-60">
       <%= render(Ui::TextareaComponent.new(name: "message[content]", rows: 1, placeholder: t("conversations.message_placeholder"),
             html_options: { id: "message_content", required: true, autocomplete: "off", autofocus: true })) { message.content } %>
     </div>
-    <%= render Ui::FileUploadComponent.new(name: "message[photo]", accept: "image/*", compact: true) %>
-    <%= render(Ui::ButtonComponent.new(type: "submit")) { t("conversations.send") } %>
+    <div class="ml-auto flex items-end gap-2">
+      <%= render Ui::FileUploadComponent.new(name: "message[photo]", accept: "image/*", compact: true) %>
+      <%= render(Ui::ButtonComponent.new(type: "submit")) { t("conversations.send") } %>
+    </div>
   <% end %>
 <% end %>

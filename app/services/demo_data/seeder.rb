@@ -321,7 +321,7 @@ module DemoData
         [ "Salon", "Cuisine", "Balcon" ].each do |location|
           reference = references.sample
           plant = @household.plants.create!(name: reference&.common_name || "Plante verte", location: location, plant_reference: reference)
-          plant.plant_care_tasks.create!(care_type: "arrosage", frequency: "weekly", interval: 1, next_due_on: Date.current + rand(1..5))
+          plant.plant_care_tasks.create!(care_type: "watering", frequency: "weekly", interval: 1, next_due_on: Date.current + rand(1..5))
         end
       end
 

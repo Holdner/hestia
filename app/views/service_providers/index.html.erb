@@ -24,19 +24,20 @@
       floor (24px) and says so — see touchFloorFor in
       script/visual_check/measure.js. %>
   <section class="mb-6 flex flex-wrap items-center gap-2" data-touch-target="compact">
-    <%= link_to service_providers_path do %>
-      <%= render(Ui::BadgeComponent.new(variant: @type ? :secondary : :default)) { t(".all_types") } %>
-    <% end %>
+    <%= render Ui::FilterChipComponent.new(label: t(".all_types"), href: service_providers_path, active: @type.nil?) %>
     <% @types.each do |type| %>
-      <%= render(Ui::BadgeComponent.new(variant: @type == type ? :default : :secondary)) do %>
-        <% if type.color.present? %><span class="inline-block size-2 rounded-full <%= service_provider_type_dot_class(type.color) %>"></span><% end %>
-        <%= link_to "#{type.icon} #{type.name}".strip, service_providers_path(type_id: type.id) %>
-        <%= link_to edit_service_provider_type_path(type), aria: { label: t(".edit_type_aria", name: type.name) }, class: "text-subdued hover:text-primary" do %><%= lucide_icon("pencil", css_class: "size-3") %><% end %>
-        <%= render(Ui::AlertDialogComponent.new(title: t(".delete_type_confirm", name: type.name), confirm_label: t(".delete_type_confirm_label"),
-              confirm_url: service_provider_type_path(type), confirm_method: :delete)) do |alert_dialog| %>
-          <% alert_dialog.with_trigger do %>
-            <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon,
-                  html_options: { aria: { label: t(".delete_type_aria", name: type.name) } })) { lucide_icon("x", css_class: "size-4") } %>
+      <%= render(Ui::FilterChipComponent.new(label: "#{type.icon} #{type.name}".strip, href: service_providers_path(type_id: type.id),
+            active: @type == type, dot_class: (service_provider_type_dot_class(type.color) if type.color.present?))) do |chip| %>
+        <% chip.with_action do %>
+          <%= link_to edit_service_provider_type_path(type), class: Ui::FilterChipComponent::ACTION_CLASSES,
+                aria: { label: t(".edit_type_aria", name: type.name) } do %><%= lucide_icon("pencil", css_class: "size-3.5") %><% end %>
+        <% end %>
+        <% chip.with_action do %>
+          <%= render(Ui::AlertDialogComponent.new(title: t(".delete_type_confirm", name: type.name), confirm_label: t(".delete_type_confirm_label"),
+                confirm_url: service_provider_type_path(type), confirm_method: :delete)) do |alert_dialog| %>
+            <% alert_dialog.with_trigger do %>
+              <button type="button" class="<%= Ui::FilterChipComponent::ACTION_CLASSES %>" aria-label="<%= t(".delete_type_aria", name: type.name) %>"><%= lucide_icon("x", css_class: "size-3.5") %></button>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>

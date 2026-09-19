@@ -31,9 +31,7 @@
     </nav>
   <% end %>
 
-  <div id="routines" class="space-y-2">
-    <%= render @routines %>
-  </div>
+  <div id="routines" class="flex flex-col divide-y divide-primary rounded-lg border border-primary empty:hidden"><%= render @routines %></div>
   <% if @routines.empty? %>
     <div class="mt-4">
       <%= render(Ui::EmptyComponent.new) { |empty| empty.with_description { t(".empty") } } %>

@@ -105,19 +105,28 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
     assert_not Note.exists?(note.id)
   end
 
-  test "delete button uses the design-system alert dialog instead of a native confirm" do
+  test "archive, promote and delete sit in the card's « … » menu, confirmed by the design-system dialog" do
+    note = notes(:alpha_idea)
     get notes_path
     assert_response :success
-    assert_select "dialog[role='alertdialog']"
-    assert_no_match(/data-turbo-confirm="#{Regexp.escape(I18n.t("notes.note.delete_confirm"))}"/, @response.body)
+
+    assert_select "##{ActionView::RecordIdentifier.dom_id(note)} [data-controller='dropdown-menu'] [role='menu']" do
+      assert_select "form[action=?] button[role='menuitem']", toggle_archive_note_path(note)
+      assert_select "form[action=?][data-turbo-confirm=?][data-turbo-confirm-variant='default'] button[role='menuitem']",
+        promote_to_task_note_path(note), I18n.t("notes.note.promote_confirm")
+      assert_select "form[action=?][data-turbo-confirm=?] button[role='menuitem'].text-destructive",
+        note_path(note), I18n.t("notes.note.delete_confirm")
+    end
+    # No per-note AlertDialogs any more: the layout's global one answers them all.
+    assert_select "dialog[role='alertdialog']:not(#global_confirm_dialog)", count: 0
   end
 
-  test "promoting a note to a task asks for confirmation via the design-system alert dialog" do
+  test "favourite is a pressable star in the card header" do
+    note = notes(:alpha_idea)
     get notes_path
     assert_response :success
-    # one per note fixture shown (delete + promote to task + promote to shopping); the layout's own is excluded
-    assert_select "dialog[role='alertdialog']:not(#global_confirm_dialog)", count: 3
-    assert_body_includes I18n.t("notes.note.promote_confirm")
+
+    assert_select "form[action=?] button[aria-pressed]", toggle_favorite_note_path(note)
   end
 
   test "cannot touch another household's note" do

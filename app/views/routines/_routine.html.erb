@@ -1,15 +1,18 @@
-<%= tag.div id: dom_id(routine), class: "rounded-lg border #{routine.overdue? ? "border-destructive bg-destructive/10" : "border-primary"}" do %>
+<%# A row among hairlines, not a card, and never painted red: overdue is the
+    badge below, the same signal the Tasks list gives (a status is text, never a
+    fill). %>
+<%= tag.div id: dom_id(routine) do %>
   <%= render(Ui::ItemComponent.new) do |item| %>
     <% item.with_title do %><%= "#{routine.emoji} " if routine.emoji.present? %><%= routine.name %><% end %>
     <% item.with_description do %>
       <%= routine_frequency_label(routine.frequency) %><%= " ×#{routine.interval}" if routine.interval.to_i > 1 %>
       <% if routine.next_due_on %>· <%= t(".next_due") %> : <%= l(routine.next_due_on, format: :numeric) %><% end %>
-      <% if routine.overdue? %><span class="font-medium text-destructive">· <%= t(".overdue") %></span><% end %>
       <% if routine.assignee %>· <%= routine.assignee.name.presence || routine.assignee.email_address %><% end %>
       <% if routine.list_name.present? %>· <%= routine.list_name %><% end %>
     <% end %>
     <% item.with_trailing do %>
       <div class="flex items-center gap-2">
+        <% if routine.overdue? %><%= render(Ui::BadgeComponent.new(variant: :destructive)) { t(".overdue").upcase_first } %><% end %>
         <%= render(Ui::ButtonToComponent.new(complete_routine_path(routine), method: :post)) {
               safe_join([ lucide_icon("check", css_class: "size-4"), t(".done") ], " ") } %>
         <%= render(Ui::DialogComponent.new) do |dialog| %>

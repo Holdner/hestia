@@ -99,7 +99,7 @@
 
     <% @pools.each do |pool| %>
       <%= render(Ui::CardComponent.new(class_name: "mb-4")) do %>
-        <div class="mb-2 flex items-center justify-between">
+        <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
           <h3 class="flex items-center gap-2 font-medium">
             <%= pool.name %>
             <%= render(Ui::BadgeComponent.new(variant: :secondary)) { treatment_label(pool.treatment_type) } %>
@@ -126,7 +126,7 @@
             <% pool.pool_readings.recent.first(5).each do |reading| %>
               <li>
                 <%= render(Ui::ItemComponent.new) do |item| %>
-                  <% item.with_title { "#{l(reading.measured_on, format: :numeric_short)} · #{measure_type_label(reading.measure_type)} : #{reading.value.to_s.sub(/\.0+\z/, "")}" } %>
+                  <% item.with_title { "#{l(reading.measured_on, format: :numeric_short)} · #{measure_type_label(reading.measure_type)} : #{decimal(reading.value)}" } %>
                   <% item.with_trailing do %>
                     <%= form_with url: pool_pool_reading_path(pool, reading), method: :delete, data: { turbo_confirm: t(".delete_reading_confirm") } do %>
                       <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon, type: "submit",
@@ -139,7 +139,7 @@
           </ul>
         <% end %>
         <% if pool.pool_readings.count > 5 %>
-          <p class="mb-2 text-xs"><%= link_to t(".see_all_readings"), history_pool_path(pool), class: "underline" %></p>
+          <div class="mb-2"><%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: history_pool_path(pool))) { t(".see_all_readings") } %></div>
         <% end %>
         <%= form_with model: [ pool, PoolReading.new ], url: pool_pool_readings_path(pool), class: "mb-3 flex flex-wrap items-end gap-3" do |form| %>
           <div class="w-32">
@@ -182,7 +182,7 @@
           </ul>
         <% end %>
         <% if pool.pool_actions.count > 5 %>
-          <p class="mb-2 text-xs"><%= link_to t(".see_all_actions"), history_pool_path(pool), class: "underline" %></p>
+          <div class="mb-2"><%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: history_pool_path(pool))) { t(".see_all_actions") } %></div>
         <% end %>
         <%= form_with model: [ pool, PoolAction.new ], url: pool_pool_actions_path(pool), class: "flex flex-wrap items-end gap-3" do |form| %>
           <div>

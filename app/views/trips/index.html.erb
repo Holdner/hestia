@@ -3,7 +3,7 @@
 <div class="mt-10 max-w-5xl mx-auto px-4">
   <div class="mb-4"><%= module_breadcrumb(:trips) %></div>
 
-  <header class="mb-6 flex items-center justify-between">
+  <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
     <h1 class="flex items-center gap-2 text-2xl font-semibold"><%= lucide_icon("luggage", css_class: "size-6") %> <%= t(".title") %></h1>
     <%= render(Ui::DialogComponent.new) do |dialog| %>
       <% dialog.with_trigger { render(Ui::ButtonComponent.new(variant: :default, size: :sm)) { t(".new_trip") } } %>

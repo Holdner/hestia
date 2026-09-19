@@ -78,7 +78,7 @@
     <% if @query.present? %>
       <h2 class="mb-2 font-medium"><%= t(".results_for", query: @query) %></h2>
     <% end %>
-    <div class="space-y-2"><%= render partial: "bottles/bottle", collection: @results, as: :bottle, locals: { show_cellar: true } %></div>
+    <div class="flex flex-col divide-y divide-primary rounded-lg border border-primary"><%= render partial: "bottles/bottle", collection: @results, as: :bottle, locals: { show_cellar: true } %></div>
     <% if @results.empty? %>
       <%= render(Ui::EmptyComponent.new) { |empty| empty.with_description { t(".no_bottles_found") } } %>
     <% end %>
@@ -102,7 +102,7 @@
                 html_options: { form: { data: { turbo_confirm: t(".delete_cellar_confirm") } } })) { t(".delete_cellar") } %>
         </div>
 
-        <div class="mb-3 space-y-2"><%= render partial: "bottles/bottle", collection: cellar.bottles.sort_by(&:name), as: :bottle %></div>
+        <div class="mb-3 flex flex-col divide-y divide-primary"><%= render partial: "bottles/bottle", collection: cellar.bottles.sort_by(&:name), as: :bottle %></div>
 
         <%= form_with model: @bottle, url: bottles_path, class: "flex flex-wrap items-end gap-2" do |form| %>
           <%= form.hidden_field :wine_cellar_id, value: cellar.id %>

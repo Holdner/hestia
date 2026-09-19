@@ -1,4 +1,4 @@
-<%= tag.div id: dom_id(fridge_item), class: "rounded-lg border border-primary" do %>
+<%= tag.div id: dom_id(fridge_item) do %>
   <%= render(Ui::ItemComponent.new) do |item| %>
     <% item.with_title do %>
       <%= fridge_item.name %>
@@ -16,22 +16,21 @@
 
         <div class="flex shrink-0 items-center gap-2">
           <%= render(Ui::DialogComponent.new(close_on_submit: true, size: :lg)) do |dialog| %>
-            <%# An :outline button, not the :link variant: this sits between two
-                icon buttons and opens a modal, so rendering it as underlined
-                body text was the one control in the row that didn't look like
-                one. %>
+            <%# A ghost pencil, like the edit control of every other list: it
+                was an :outline « Modifier » button, the one labelled control in
+                a row of icons (and before that an underlined :link). %>
             <% dialog.with_trigger do %>
-              <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, icon: "pencil")) { t(".edit") } %>
+              <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon, icon: "pencil",
+                    html_options: { aria: { label: t(".edit") } })) %>
             <% end %>
             <% dialog.with_title { t(".edit") } %>
             <%= turbo_frame_tag dom_id(fridge_item, :edit), src: edit_fridge_item_path(fridge_item), loading: :lazy do %>
               <%= render "shared/frame_skeleton", label: t(".edit_loading"), rows: 3 %>
             <% end %>
           <% end %>
-          <%= button_to move_to_shopping_list_fridge_item_path(fridge_item), method: :post,
-                class: "cursor-pointer text-subdued hover:text-primary",
-                form: { title: t(".add_to_list_title"), data: { turbo_confirm: t(".add_to_list_confirm") } },
-                aria: { label: t(".rebuy_aria") } do %><%= lucide_icon("shopping-cart", css_class: "size-4") %><% end %>
+          <%= render(Ui::ButtonToComponent.new(move_to_shopping_list_fridge_item_path(fridge_item), method: :post, variant: :ghost, size: :icon,
+                html_options: { title: t(".add_to_list_title"), aria: { label: t(".rebuy_aria") },
+                                form: { data: { turbo_confirm: t(".add_to_list_confirm") } } })) { lucide_icon("shopping-cart", css_class: "size-4") } %>
           <%= form_with url: fridge_item_path(fridge_item), method: :delete, class: "inline",
                 data: { turbo_confirm: t(".delete_confirm") } do %>
             <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon, type: "submit",

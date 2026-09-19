@@ -67,6 +67,6 @@ class FridgeControllerTest < ActionDispatch::IntegrationTest
   test "the edit control is a button rather than a text link" do
     get fridge_path
     assert_response :success
-    assert_select "button.border", text: /#{Regexp.escape(I18n.t("fridge_items.fridge_item.edit"))}/
+    assert_select "button[aria-label=?]", I18n.t("fridge_items.fridge_item.edit")
   end
 end

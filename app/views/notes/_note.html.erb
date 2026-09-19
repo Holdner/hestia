@@ -2,16 +2,37 @@
 <%= tag.div id: dom_id(note) do %>
   <%= render(Ui::CardComponent.new(class_name: note_card_color_class(note.color))) do %>
     <div class="flex flex-col">
+      <%# Three icons, not a row of five buttons: the favourite star (filled
+          when on) and the pencil stay in reach, the rest sits behind « … ».
+          The menu confirms through the global dialog, as the AlertDialogs it
+          replaces did, and says « Convertir » in neutral, not a red Confirmer. %>
       <div class="mb-1 flex items-start justify-between gap-2">
-        <h2 class="flex items-center gap-1.5 font-medium">
-          <% if note.favorite %>
-            <span class="sr-only"><%= t(".favorite_indicator") %></span>
-            <%= lucide_icon("star", css_class: "size-4 fill-current text-primary") %>
+        <h2 class="min-w-0 pt-2 font-medium"><%= note.title %></h2>
+        <div class="-mr-2 flex shrink-0 items-center">
+          <%= render(Ui::ButtonToComponent.new(toggle_favorite_note_path(note, **filter_params), method: :patch, variant: :ghost, size: :icon,
+                html_options: { aria: { label: note.favorite ? t(".unfavorite") : t(".favorite"), pressed: note.favorite } })) {
+                lucide_icon("star", css_class: "size-4 #{"fill-current" if note.favorite}") } %>
+          <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon, href: edit_note_path(note),
+                html_options: { aria: { label: t(".edit_aria", title: note.title) } })) { lucide_icon("pencil", css_class: "size-4") } %>
+          <%= render(Ui::DropdownMenuComponent.new) do |menu| %>
+            <% menu.with_trigger do %>
+              <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon,
+                    html_options: { aria: { label: t(".more_actions_aria", title: note.title) } })) { lucide_icon("ellipsis", css_class: "size-4") } %>
+            <% end %>
+            <%= button_to note.archived ? t(".unarchive") : t(".archive"), toggle_archive_note_path(note, **filter_params),
+                  method: :patch, **Ui::DropdownMenuComponent.item_options %>
+            <%= button_to t(".promote_to_task"), promote_to_task_note_path(note, **filter_params), method: :post,
+                  form: { data: { turbo_confirm: t(".promote_confirm"), turbo_confirm_label: t(".promote_confirm_label"), turbo_confirm_variant: "default" } },
+                  **Ui::DropdownMenuComponent.item_options %>
+            <%= button_to t(".promote_to_shopping"), promote_to_shopping_list_item_note_path(note, **filter_params), method: :post,
+                  form: { data: { turbo_confirm: t(".promote_to_shopping_confirm"), turbo_confirm_label: t(".promote_to_shopping_confirm_label"), turbo_confirm_variant: "default" } },
+                  **Ui::DropdownMenuComponent.item_options %>
+            <%= Ui::DropdownMenuComponent.separator %>
+            <%= button_to t(".delete"), note_path(note, **filter_params), method: :delete,
+                  form: { data: { turbo_confirm: t(".delete_confirm"), turbo_confirm_label: t(".delete") } },
+                  **Ui::DropdownMenuComponent.item_options(destructive: true) %>
           <% end %>
-          <%= note.title %>
-        </h2>
-        <%= link_to edit_note_path(note), class: "shrink-0 text-subdued hover:text-primary",
-              aria: { label: t(".edit_aria", title: note.title) } do %><%= lucide_icon("pencil", css_class: "size-4") %><% end %>
+        </div>
       </div>
       <% if note.content.present? %>
         <div class="mb-3 line-clamp-4 space-y-1 text-sm text-secondary"><%= format_note_content(note.content) %></div>
@@ -26,24 +47,6 @@
           <% end %>
         </div>
       <% end %>
-      <div class="mt-auto flex flex-wrap gap-2">
-        <%= render(Ui::ButtonToComponent.new(toggle_favorite_note_path(note, **filter_params), method: :patch)) {
-              note.favorite ? t(".unfavorite") : t(".favorite") } %>
-        <%= render(Ui::ButtonToComponent.new(toggle_archive_note_path(note, **filter_params), method: :patch)) {
-              note.archived ? t(".unarchive") : t(".archive") } %>
-        <%= render(Ui::AlertDialogComponent.new(title: t(".promote_confirm"), confirm_label: t(".promote_confirm_label"),
-              confirm_url: promote_to_task_note_path(note, **filter_params), confirm_method: :post, confirm_variant: :default)) do |alert_dialog| %>
-          <% alert_dialog.with_trigger { render(Ui::ButtonComponent.new(variant: :outline, size: :sm)) { t(".promote_to_task") } } %>
-        <% end %>
-        <%= render(Ui::AlertDialogComponent.new(title: t(".promote_to_shopping_confirm"), confirm_label: t(".promote_to_shopping_confirm_label"),
-              confirm_url: promote_to_shopping_list_item_note_path(note, **filter_params), confirm_method: :post, confirm_variant: :default)) do |alert_dialog| %>
-          <% alert_dialog.with_trigger { render(Ui::ButtonComponent.new(variant: :outline, size: :sm)) { t(".promote_to_shopping") } } %>
-        <% end %>
-        <%= render(Ui::AlertDialogComponent.new(title: t(".delete_confirm"), confirm_label: t(".delete"),
-              confirm_url: note_path(note, **filter_params), confirm_method: :delete)) do |alert_dialog| %>
-          <% alert_dialog.with_trigger { render(Ui::ButtonComponent.new(variant: :outline, size: :sm)) { t(".delete") } } %>
-        <% end %>
-      </div>
     </div>
   <% end %>
 <% end %>

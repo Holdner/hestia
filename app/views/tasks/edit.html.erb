@@ -8,9 +8,9 @@
   <%= turbo_frame_tag dom_id(@task, :edit) do %>
     <%= render "form_fields", task: @task %>
     <% if turbo_frame_request? %>
-      <p class="mt-4 text-sm">
-        <%= link_to t(".more_options_link"), edit_task_path(@task), data: { turbo_frame: "_top" }, class: "underline" %>
-      </p>
+      <div class="mt-4">
+        <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :sm, href: edit_task_path(@task), html_options: { data: { turbo_frame: "_top" } })) { t(".more_options_link") } %>
+      </div>
     <% end %>
   <% end %>
 

@@ -1,10 +1,15 @@
 <%= tag.div id: "new_circle_post" do %>
+  <%# Same shape as the message composer: the text first and wide, then the
+      compact attachment and the button. The full drop zone sat in a w-40
+      column beside the textarea and made the row three boxes of odd heights. %>
   <%= form_with model: [ circle, post ], url: circle_posts_path(circle), multipart: true, class: "mb-6 flex flex-wrap items-end gap-2" do |form| %>
-    <%= render Ui::TextareaComponent.new(name: "circle_post[body]", rows: 2, placeholder: t("circles.post_placeholder"),
-          html_options: { id: "circle_post_body", required: true, class: "flex-1" }) %>
-    <div class="w-40">
-      <%= render Ui::FileUploadComponent.new(name: "circle_post[photo]", accept: "image/*") %>
+    <div class="min-w-0 grow basis-60">
+      <%= render Ui::TextareaComponent.new(name: "circle_post[body]", rows: 2, placeholder: t("circles.post_placeholder"),
+            html_options: { id: "circle_post_body", required: true }) %>
     </div>
-    <%= render(Ui::ButtonComponent.new(type: "submit")) { t("circles.publish") } %>
+    <div class="ml-auto flex items-end gap-2">
+      <%= render Ui::FileUploadComponent.new(name: "circle_post[photo]", accept: "image/*", compact: true) %>
+      <%= render(Ui::ButtonComponent.new(type: "submit")) { t("circles.publish") } %>
+    </div>
   <% end %>
 <% end %>
