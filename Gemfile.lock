@@ -173,7 +173,7 @@ GEM
       logger
       ostruct
     ice_cube (0.17.0)
-    image_processing (2.0.3)
+    image_processing (2.1.0)
     importmap-rails (2.2.3)
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -508,7 +508,7 @@ DEPENDENCIES
   faker
   i18n-tasks
   icalendar
-  image_processing (~> 2.0)
+  image_processing (~> 2.1)
   jbuilder
   jsbundling-rails
   kamal
