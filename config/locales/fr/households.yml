@@ -6,7 +6,7 @@ fr:
       name_label: "Nom du foyer"
       name_placeholder: "Famille Dupont"
       submit: "Créer le foyer"
-      back: "← Retour"
+      back: "Retour"
     show:
       household: "Foyer"
       invite_code: "Code d'invitation"

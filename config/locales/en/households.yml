@@ -6,7 +6,7 @@ en:
       name_label: "Household name"
       name_placeholder: "The Smith Family"
       submit: "Create household"
-      back: "← Back"
+      back: "Back"
     show:
       household: "Household"
       invite_code: "Invite code"

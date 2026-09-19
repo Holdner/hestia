@@ -6,7 +6,7 @@ fr:
       invite_code_label: "Code d'invitation"
       invite_code_placeholder: "Ex. ABCD2345"
       submit: "Rejoindre"
-      back: "← Retour"
+      back: "Retour"
     create:
       invalid_code: "Code d'invitation invalide."
       already_member: "Vous faites déjà partie de ce foyer."

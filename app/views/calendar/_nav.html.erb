@@ -1,0 +1,13 @@
+<%# Previous / today / next for the month, week and day views. Below sm the
+    previous/next labels ("Semaine précédente") would wrap inside a
+    fixed-height button, so only the arrow shows there; the label stays in the
+    button for screen readers. %>
+<div class="mb-3 flex items-center justify-between gap-2">
+  <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, icon: "arrow-left", href: prev_url)) do %>
+    <span class="max-sm:sr-only"><%= prev_label %></span>
+  <% end %>
+  <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: today_url)) { t("calendar.show.today") } %>
+  <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, icon: "arrow-right", icon_position: :trailing, href: next_url)) do %>
+    <span class="max-sm:sr-only"><%= next_label %></span>
+  <% end %>
+</div>

@@ -74,25 +74,22 @@
   <%= render "shared/flash" %>
 
   <% if @view == "month" %>
-    <div class="mb-3 flex items-center justify-between text-sm">
-      <%= link_to t(".prev_month"), calendar_path(view: "month", month: (@month - 1.month).strftime("%Y-%m"), member_id: @member_id), class: "underline" %>
-      <%= link_to t(".today"), calendar_path(view: "month", member_id: @member_id), class: "underline" %>
-      <%= link_to t(".next_month"), calendar_path(view: "month", month: (@month + 1.month).strftime("%Y-%m"), member_id: @member_id), class: "underline" %>
-    </div>
+    <%= render "calendar/nav",
+          prev_url: calendar_path(view: "month", month: (@month - 1.month).strftime("%Y-%m"), member_id: @member_id), prev_label: t(".prev_month"),
+          today_url: calendar_path(view: "month", member_id: @member_id),
+          next_url: calendar_path(view: "month", month: (@month + 1.month).strftime("%Y-%m"), member_id: @member_id), next_label: t(".next_month") %>
     <%= render "calendar/grid", dates: (@grid_start.to_date..@grid_end.to_date), by_day: @by_day, holidays: @holidays, current_month: @month %>
   <% elsif @view == "week" %>
-    <div class="mb-3 flex items-center justify-between text-sm">
-      <%= link_to t(".prev_week"), calendar_path(view: "week", date: (@date - 1.week).iso8601, member_id: @member_id), class: "underline" %>
-      <%= link_to t(".today"), calendar_path(view: "week", member_id: @member_id), class: "underline" %>
-      <%= link_to t(".next_week"), calendar_path(view: "week", date: (@date + 1.week).iso8601, member_id: @member_id), class: "underline" %>
-    </div>
+    <%= render "calendar/nav",
+          prev_url: calendar_path(view: "week", date: (@date - 1.week).iso8601, member_id: @member_id), prev_label: t(".prev_week"),
+          today_url: calendar_path(view: "week", member_id: @member_id),
+          next_url: calendar_path(view: "week", date: (@date + 1.week).iso8601, member_id: @member_id), next_label: t(".next_week") %>
     <%= render "calendar/grid", dates: (@grid_start.to_date..@grid_end.to_date), by_day: @by_day, holidays: @holidays, current_month: nil %>
   <% elsif @view == "day" %>
-    <div class="mb-3 flex items-center justify-between text-sm">
-      <%= link_to t(".prev_day"), calendar_path(view: "day", date: (@date - 1.day).iso8601, member_id: @member_id), class: "underline" %>
-      <%= link_to t(".today"), calendar_path(view: "day", member_id: @member_id), class: "underline" %>
-      <%= link_to t(".next_day"), calendar_path(view: "day", date: (@date + 1.day).iso8601, member_id: @member_id), class: "underline" %>
-    </div>
+    <%= render "calendar/nav",
+          prev_url: calendar_path(view: "day", date: (@date - 1.day).iso8601, member_id: @member_id), prev_label: t(".prev_day"),
+          today_url: calendar_path(view: "day", member_id: @member_id),
+          next_url: calendar_path(view: "day", date: (@date + 1.day).iso8601, member_id: @member_id), next_label: t(".next_day") %>
     <% if (holiday = @holidays&.dig(@date)) %>
       <%= render(Ui::BadgeComponent.new(variant: :destructive, html_options: { class: "mb-3" })) { holiday[:name] } %>
     <% end %>

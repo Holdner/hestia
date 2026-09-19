@@ -20,7 +20,7 @@
     </div>
   <% end %>
 
-  <p class="mt-4 text-sm">
-    <%= link_to t(".back_to_sign_in"), new_session_path, class: "underline" %>
-  </p>
+  <div class="mt-4">
+    <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, icon: "arrow-left", href: new_session_path)) { t(".back_to_sign_in") } %>
+  </div>
 </div>

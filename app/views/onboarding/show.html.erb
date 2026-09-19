@@ -6,7 +6,7 @@
 
   <%= render "shared/flash" %>
 
-  <div class="grid gap-4 sm:grid-cols-2">
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
     <div class="rounded-lg border border-primary">
       <%= render(Ui::ItemComponent.new(href: new_household_path)) do |item| %>
         <% item.with_title { t(".create_household") } %>
@@ -22,8 +22,14 @@
     </div>
   </div>
 
-  <p class="mt-6 text-sm text-secondary">
-    <%= button_to t(".sign_out"), session_path, method: :delete, class: "cursor-pointer underline" %>
-    · <%= link_to t("roadmap.show.title"), roadmap_path, class: "underline" %>
-  </p>
+  <%# A <div>, not a <p>: Sign out is a button_to <form>, which the HTML parser
+      refuses to nest in a <p>. It closes the paragraph early and splits the
+      two buttons onto separate lines. %>
+  <div class="mt-6 flex flex-wrap items-center justify-between gap-2">
+    <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, icon: "map", href: roadmap_path)) { t("roadmap.show.title") } %>
+    <%= render(Ui::ButtonToComponent.new(session_path, method: :delete, variant: :outline, size: :sm)) do %>
+      <%= lucide_icon("log-out", css_class: "size-4") %>
+      <%= t(".sign_out") %>
+    <% end %>
+  </div>
 </div>
