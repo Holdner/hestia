@@ -1,3 +1,21 @@
+<% if segmented? %>
+  <%# Same tab-group look as the Budget's Mensuel / Annuel switch. Which one is
+      pressed lives in localStorage, so the theme controller sets aria-pressed
+      on connect and the aria-pressed: variants do the styling. %>
+  <div data-controller="theme" role="group" aria-label="<%= t("ui.theme_toggle.group_aria") %>"
+    class="inline-flex flex-wrap gap-1 rounded-md bg-tab-group p-1">
+    <% CHOICES.each do |choice| %>
+      <button type="button" data-theme-target="choice" data-theme-choice-param="<%= choice %>" data-action="click->theme#choose"
+        aria-pressed="false"
+        class="flex h-[var(--control-h-sm)] cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-md px-3 text-sm font-medium text-secondary transition-colors hover:text-primary aria-pressed:bg-tab-item-active aria-pressed:text-primary aria-pressed:shadow-border-xs">
+        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <%= icon_paths(choice) %>
+        </svg>
+        <%= t("ui.theme_toggle.#{choice}") %>
+      </button>
+    <% end %>
+  </div>
+<% else %>
 <button type="button" data-controller="theme" data-action="click->theme#cycle"
   class="inline-flex size-9 items-center justify-center rounded-md text-secondary hover:bg-surface-hover hover:text-primary transition-colors"
   aria-label="Thème actuel : clair. Cliquer pour changer de thème.">
@@ -18,3 +36,4 @@
     </svg>
   </span>
 </button>
+<% end %>

@@ -31,9 +31,22 @@ class Ui::ChartComponentTest < ViewComponent::TestCase
   test "cycles through the color palette for series longer than the palette" do
     data = (1..6).map { |n| [ "M#{n}", n ] }
 
-    render_inline(Ui::ChartComponent.new(data: data))
+    render_inline(Ui::ChartComponent.new(data: data, categorical: true))
 
     assert_selector "div.bg-module-tasks", count: 2 # index 0 and index 5 both wrap to the first color
+  end
+
+  test "a single series draws every bar in the neutral gauge color" do
+    render_inline(Ui::ChartComponent.new(data: [ [ "19/07", 7.0 ], [ "20/07", 7.2 ], [ "21/07", 7.4 ] ]))
+
+    assert_selector "div.bg-gauge", count: 3
+    assert_no_selector "div.bg-module-tasks"
+  end
+
+  test "a line without a module color is drawn in the gauge color" do
+    render_inline(Ui::ChartComponent.new(data: [ [ "Jan", 1 ], [ "Feb", 2 ] ], variant: :line))
+
+    assert_selector "div.text-gauge polyline"
   end
 
   test "each bar carries an accessible label combining its category and value" do

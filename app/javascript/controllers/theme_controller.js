@@ -6,7 +6,7 @@ import { Controller } from "@hotwired/stimulus"
 // controller keeps it in sync afterwards and reflects the active choice
 // in its own icon/label state.
 export default class extends Controller {
-  static targets = [ "option" ]
+  static targets = [ "option", "choice" ]
 
   static ORDER = [ "light", "dark", "system" ]
 
@@ -38,6 +38,13 @@ export default class extends Controller {
     this.render()
   }
 
+  // The segmented variant: set the theme a choice button names.
+  choose({ params: { choice } }) {
+    localStorage.setItem("theme", choice)
+    this.apply()
+    this.render()
+  }
+
   apply() {
     const theme = this.current()
     const isDark = theme === "dark" || (theme === "system" && this.media.matches)
@@ -47,6 +54,7 @@ export default class extends Controller {
   render() {
     const theme = this.current()
     this.optionTargets.forEach((el) => { el.hidden = el.dataset.theme !== theme })
-    this.element.setAttribute("aria-label", this.constructor.LABELS[theme])
+    this.choiceTargets.forEach((el) => el.setAttribute("aria-pressed", String(el.dataset.themeChoiceParam === theme)))
+    if (this.hasOptionTarget) this.element.setAttribute("aria-label", this.constructor.LABELS[theme])
   }
 }

@@ -10,6 +10,17 @@ module ApplicationHelper
     nil
   end
 
+  # A measured value (a weight, a pH, a BMI) in the reader's locale: 77,7 in
+  # French where "#{value}" printed 77.7, a period no French reader writes.
+  # Trailing zeros drop (12,0 kg reads 12 kg); signed: true prefixes "+" on
+  # a positive value, for a difference.
+  def decimal(value, precision: 2, signed: false)
+    return if value.nil?
+
+    formatted = number_with_precision(value, precision: precision, strip_insignificant_zeros: true)
+    signed && value.to_d.positive? ? "+#{formatted}" : formatted
+  end
+
   # Standard "Dashboard / Module" breadcrumb shown above every module view,
   # reusing dashboard.show.nav.* so a module's display name has one source of
   # truth (SidebarHelper::SIDEBAR_GROUPS). Pass extra [label, path] pairs for

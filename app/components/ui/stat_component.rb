@@ -6,7 +6,7 @@ module Ui
   #
   # Content only, no container of its own: it sits in a Card, or straight on
   # the page. Giving it a border would put a card inside a card the moment a
-  # caller wraps it (règle 4, one elevation level at a time).
+  # caller wraps it (rule 4, one elevation level at a time).
   class StatComponent < ApplicationComponent
     renders_one :support
     renders_one :badge

@@ -40,13 +40,15 @@ module Swatch
   # that role; `fetch(hue, nil)` is what keeps that honest rather than guessing.
 
   # A tinted card — a note's paper. A -50 wash inside a -200 border, inverted
-  # for dark mode.
+  # for dark mode as a -900 wash at 20%: at 40% a note read as a block of
+  # colour on the dark page, not paper with a tint (the 10-15% of the design
+  # language's accents).
   CARD = {
-    "yellow" => "bg-yellow-50 border-yellow-200 dark:bg-yellow-900/40 dark:border-yellow-800",
-    "pink" => "bg-pink-50 border-pink-200 dark:bg-pink-900/40 dark:border-pink-800",
-    "blue" => "bg-blue-50 border-blue-200 dark:bg-blue-900/40 dark:border-blue-800",
-    "green" => "bg-green-50 border-green-200 dark:bg-green-900/40 dark:border-green-800",
-    "purple" => "bg-violet-50 border-violet-200 dark:bg-violet-900/40 dark:border-violet-800"
+    "yellow" => "bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800",
+    "pink" => "bg-pink-50 border-pink-200 dark:bg-pink-900/20 dark:border-pink-800",
+    "blue" => "bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800",
+    "green" => "bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800",
+    "purple" => "bg-violet-50 border-violet-200 dark:bg-violet-900/20 dark:border-violet-800"
   }.freeze
 
   # A chip carrying text — a calendar event. Needs a foreground as well as a

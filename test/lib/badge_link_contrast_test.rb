@@ -57,7 +57,7 @@ class BadgeLinkContrastTest < ActiveSupport::TestCase
     end
 
     def theme_body
-      match = css.match(/@theme\s*\{(.*?)^\}/m)
+      match = css.match(/@theme(?:\s+static)?\s*\{(.*?)^\}/m)
       raise "@theme block not found in #{CSS_PATH}" unless match
 
       match[1]

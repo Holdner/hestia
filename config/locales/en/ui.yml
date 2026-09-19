@@ -2,6 +2,11 @@ en:
   ui:
     dialog:
       close_aria: Close
+    theme_toggle:
+      group_aria: "Theme"
+      light: "Light"
+      dark: "Dark"
+      system: "System"
     breadcrumb:
       nav_aria: Breadcrumb
     pagination:

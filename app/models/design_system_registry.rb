@@ -213,6 +213,12 @@ module DesignSystemRegistry
       related: %w[avatar tooltip]),
     Entry.new(slug: "badge", name: "Badge", category: CATEGORIES[3], component_class: Ui::BadgeComponent,
       description: "Étiquette compacte de statut ou de catégorie."),
+    Entry.new(slug: "filter-chip", name: "Filter Chip", category: CATEGORIES[3], component_class: Ui::FilterChipComponent,
+      description: "Un filtre d'une rangée de puces (étiquettes, dossiers, types) : le lien occupe toute la hauteur, avec pastille de couleur et actions optionnelles.",
+      usage: "Pour filtrer une liste, pas pour étiqueter une ligne : une étiquette qui ne mène nulle part est un Badge.\n" \
+        "La rangée de puces porte data-touch-target=\"compact\" : 32px de haut, actions à 24px (FilterChipComponent::ACTION_CLASSES), le plancher WCAG AA.\n" \
+        "Le filtre actif est plein et porte aria-current.",
+      related: %w[badge]),
     Entry.new(slug: "kbd", name: "Kbd", category: CATEGORIES[3], component_class: Ui::KbdComponent,
       description: "Représente une touche ou un raccourci clavier."),
     Entry.new(slug: "card", name: "Card", category: CATEGORIES[3], component_class: Ui::CardComponent,

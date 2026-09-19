@@ -1,0 +1,8 @@
+<div class="flex flex-wrap items-center gap-2" data-touch-target="compact">
+  <%= render Ui::FilterChipComponent.new(label: "Tous", href: "#", active: true) %>
+  <%= render(Ui::FilterChipComponent.new(label: "Factures", href: "#", dot_class: "bg-blue-500")) do |chip| %>
+    <% chip.with_action { link_to(lucide_icon("pencil", css_class: "size-3.5"), "#", class: Ui::FilterChipComponent::ACTION_CLASSES, "aria-label": "Modifier « Factures »") } %>
+    <% chip.with_action { tag.button(lucide_icon("x", css_class: "size-3.5"), type: "button", class: Ui::FilterChipComponent::ACTION_CLASSES, "aria-label": "Supprimer « Factures »") } %>
+  <% end %>
+  <%= render Ui::FilterChipComponent.new(label: "Contrats", href: "#", dot_class: "bg-green-500") %>
+</div>

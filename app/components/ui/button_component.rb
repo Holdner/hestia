@@ -76,7 +76,10 @@ module Ui
 
       def base_classes(justify: "justify-center")
         cn(
-          "inline-flex items-center rounded-md font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-focus",
+          # whitespace-nowrap: a fixed-height button whose label wraps spills
+          # it over its own border ("Nouveau / contact" in a 36px box). The
+          # container around the buttons wraps instead.
+          "inline-flex items-center whitespace-nowrap rounded-md font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-focus",
           justify,
           # A button given `href:` renders as an anchor, and the global
           # `a:hover { text-decoration: underline }` in application.tailwind.css

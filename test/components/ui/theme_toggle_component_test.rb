@@ -27,4 +27,14 @@ class Ui::ThemeToggleComponentTest < ViewComponent::TestCase
     assert_selector "span[data-theme-target='option'][data-theme='system'][hidden]", visible: false
     assert_selector "svg", count: 3, visible: false
   end
+
+  test "the segmented variant shows the three choices as pressable buttons wired to choose" do
+    I18n.with_locale(:fr) { render_inline(Ui::ThemeToggleComponent.new(variant: :segmented)) }
+
+    assert_selector "div[role='group'][data-controller='theme']"
+    %w[light dark system].each do |choice|
+      assert_selector "button[data-theme-target='choice'][data-theme-choice-param='#{choice}'][data-action='click->theme#choose'][aria-pressed='false']"
+    end
+    assert_selector "button", text: "Sombre"
+  end
 end

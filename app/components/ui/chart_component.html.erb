@@ -15,7 +15,7 @@
   <div class="flex items-end gap-3" style="height: <%= @height %>px">
     <% @data.each_with_index do |(label, value), index| %>
       <div class="flex h-full min-w-0 flex-1 flex-col items-center justify-end">
-        <div class="w-full max-w-12 rounded-t-sm <%= COLORS[index % COLORS.size] %>" style="height: <%= (value / @max * 100).round(2) %>%" role="img" aria-label="<%= label %> : <%= value %>"></div>
+        <div class="w-full max-w-12 rounded-t-sm <%= bar_color(index) %>" style="height: <%= (value / @max * 100).round(2) %>%" role="img" aria-label="<%= label %> : <%= value %>"></div>
       </div>
     <% end %>
   </div>

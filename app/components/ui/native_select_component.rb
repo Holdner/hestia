@@ -34,7 +34,8 @@ module Ui
     private
       def base_classes
         cn(
-          "flex w-full appearance-none rounded-md border bg-container px-3 text-primary",
+          # pr-9 leaves room for the .select-chevron glyph drawn at right-3.
+          "select-chevron flex w-full appearance-none rounded-md border bg-container pl-3 pr-9 text-primary",
           "focus-visible:outline-none focus-visible:ring-focus disabled:opacity-50",
           SIZES.fetch(@size),
           @invalid ? "border-destructive" : "border-primary"
