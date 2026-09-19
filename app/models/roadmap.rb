@@ -38,7 +38,7 @@ module Roadmap
     account_privacy security_audit_trail household_activity_export
     tasks_and_recurrence shared_responsibility cooking_and_shopping
     reference_catalog_growth shared_link_controls household_logistics
-    backup_and_restore instance_operations api_as_a_product
+    backup_and_restore instance_operations api_as_a_product mcp_server
     notifications_automation first_run_experience personalization
     object_graph granular_permissions document_intelligence health_records
     automation_rules marketing_docs scaling_thresholds
@@ -130,7 +130,7 @@ module Roadmap
     "today_view" => "sunrise", "quick_capture" => "inbox",
     "security_audit_trail" => "shield-check", "shared_responsibility" => "users",
     "backup_and_restore" => "database-backup", "instance_operations" => "stethoscope",
-    "api_as_a_product" => "plug", "object_graph" => "network",
+    "api_as_a_product" => "plug", "mcp_server" => "plug", "object_graph" => "network",
     "granular_permissions" => "key-round", "document_intelligence" => "scan-text",
     "automation_rules" => "workflow", "offline_sync" => "cloud-off"
   }.freeze

@@ -290,6 +290,13 @@ en:
           - "Api::V1::BaseController pins Current.household to households.first, so a member of two households can never reach the second — and the fixtures, one membership per user, cannot catch it"
           - "Rate limiting on tokens (the web's three authentication entry points have it, the API has none), idempotency keys for retried writes, and a total count on paginated responses"
           - "Writes past the handful that exist: the surface is read-mostly, with no update or destroy anywhere"
+      mcp_server:
+        title: "MCP server for AI assistants"
+        items:
+          - "An MCP (Model Context Protocol) server so Claude, ChatGPT or any compatible assistant can read and act on the household: shopping, tasks, calendar and fridge exposed as tools, reusing the api/v1 token authentication and module gating rather than a parallel path"
+          - "Scoped tokens: an ApiToken today carries every right its user has, read and write, across every module. Handing an assistant a read-only token, or one limited to a few modules, has to be possible"
+          - "Every write tool declared as such, so the assistant asks for confirmation before acting, and another member's Wellbeing data out of reach, as with Hest.AI"
+          - "Comes after \"The API treated as a product\": without an OpenAPI description or a fix for the household pinned to households.first, each tool would re-describe the same surface by hand"
       notifications_automation:
         title: "Notifications and outbound automation"
         items:
