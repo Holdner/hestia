@@ -10,9 +10,10 @@
   --font-sans: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   /* Editorial serif accent — the register where the app speaks to a person:
-     greeting, celebration title, empty-state title, plus hero amounts and
-     dashboard section titles case by case in the views. Never a label, never a
-     table cell, never under 20px.
+     greeting, celebration title, empty-state title, a hero amount (Ui::Stat,
+     .hero-amount) and a dashboard section title (.section-title). Never a
+     label, never a table cell, never under 20px, never more than one line in
+     a data view.
 
      Replaces Caveat (2026-08-12): a handwritten face can only do one thing —
      a short line — and the same register was wanted on an amount and on an
@@ -21,9 +22,6 @@
      Instrument Serif ships ONE weight (400). Any font-semibold/font-bold on it
      fabricates a synthetic bold on screen — don't. */
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-  /* Deprecated alias, so nothing breaks mid-transition. New call sites write
-     --font-display; a later pass deletes this and its remaining callers. */
-  --font-hand: var(--font-display);
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
@@ -294,6 +292,8 @@
   --color-destructive: var(--destructive);
   --color-destructive-subtle: var(--destructive-subtle);
   --color-info: var(--info);
+  --color-gauge: var(--gauge);
+  --color-support-figure: var(--support-figure);
   --color-shadow: var(--shadow-color);
   --color-link: var(--link);
   --color-tertiary: var(--tertiary);
@@ -348,6 +348,14 @@
   --info: var(--color-pine-600);
   --link: var(--color-pine-700);
   --link-hover: var(--color-pine-800);
+  /* A gauge informs without asking for action, so it is pine (règle 1), not
+     the terracotta of what activates. Its own token rather than a reuse of
+     --info: a progress bar is not an info state, and the two may drift. */
+  --gauge: var(--color-pine-600);
+  /* The supporting figure under a hero amount (« sur 1 600,00 € prévus »):
+     it informs, so pine. pine-600 rather than --link's pine-700 so the two
+     don't read as the same thing; 6.3:1 on --surface, more on a container. */
+  --support-figure: var(--color-pine-600);
 
   /* Status text on a light tint. --success/--warning/--destructive/--info/--accent
      above are tuned as FILLS (dots, bars, borders); at 13-15px on a 10% tint
@@ -461,6 +469,8 @@
   --info: var(--color-pine-400);
   --link: var(--color-pine-300);
   --link-hover: var(--color-pine-200);
+  --gauge: var(--color-pine-400);
+  --support-figure: var(--color-pine-300);
 
   --success-text: var(--color-green-300);
   --warning-text: var(--color-yellow-300);
@@ -729,6 +739,18 @@ dialog[data-state="closed"]::backdrop { opacity: 0; }
      or a data-view heading. Weight 400 because --font-display has no other one;
      600 here used to buy Caveat's heavier cut and now only buys a fake bold. */
   .greeting { font-family: var(--font-display); font-weight: 400; font-size: 44px; line-height: 1.05; letter-spacing: -0.01em; color: var(--text-primary); }
+
+  /* The two other places the serif is granted outside a component: a
+     dashboard section title and a hero amount. Both one line, both at or
+     above the 20px floor. A section title is always text-primary, even over
+     overdue rows: the status is the rows' own badges, and a title in
+     crimson on top of them said it twice. */
+  .section-title { font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 1.2; letter-spacing: -0.005em; color: var(--text-primary); }
+  .hero-amount { font-family: var(--font-display); font-weight: 400; font-size: 34px; line-height: 1.1; letter-spacing: -0.01em; color: var(--text-primary); white-space: nowrap; }
+
+  /* Mono eyebrow above a greeting or a doc title (the date, a kicker). Small
+     and quiet: it situates the line under it, it never competes with it. */
+  .eyebrow { font-family: var(--font-mono); font-size: var(--text-xs); line-height: 1.4; letter-spacing: 0.04em; color: var(--text-secondary); }
 
   /* Heading scale — explicit line-height/letter-spacing per level, single
      source of truth for Typography's h1-h4 variants (and any raw markup). */

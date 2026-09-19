@@ -29,13 +29,14 @@ Les échelles brutes d'amont (`gray-*`, `red-*`, `indigo-*`, etc.) restent intac
 viz — seuls les tokens **sémantiques** (marque, neutres, destructif, contrepoint froid) ont changé
 de source.
 
-## Les trois règles
+## Les quatre règles
 
 > **Hestia ressemble à un foyer bien tenu, pas à un tableau de bord.**
 
 C'est la phrase de direction : elle tranche les cas que rien ci-dessous ne couvre. Matières de
 référence — papier ivoire (les surfaces), terre cuite mate non émaillée (la marque), lin écru
-(les neutres chauds).
+(les neutres chauds). Leurs photos vivent sur `/design-system/materials`, et nulle part dans le
+produit.
 
 1. **Le pin est le contrepoint froid, jamais une seconde marque.** Il prend ce qui informe sans
    demander d'action (liens, `--info`, jauges, séries neutres). La terre cuite garde ce qui
@@ -46,6 +47,9 @@ référence — papier ivoire (les surfaces), terre cuite mate non émaillée (l
 3. **Un filet d'1px plutôt qu'un écart.** À l'intérieur d'une carte, un trait `border-subdued`
    hiérarchise mieux qu'un `gap` de 20px. L'écart sépare les cartes ; le filet sépare ce qu'elles
    contiennent.
+4. **Un seul niveau d'élévation à la fois.** Une carte est posée sur la page, un menu flotte
+   au-dessus d'elle : jamais une carte ombrée dans une carte ombrée. Ce qui vit à l'intérieur
+   d'une surface élevée se sépare par un filet (règle 3), pas par une deuxième ombre.
 
 ## Surfaces & color roles
 
@@ -59,6 +63,8 @@ grays for chrome, and never use `dark:` variants (theming is class-based via tok
 | Inset well (code, tab track, skeleton) | `bg-surface-inset`, `bg-container-inset` |
 | Text hierarchy | `text-primary` → `text-secondary` → `text-subdued`; on dark fills `text-inverse` |
 | Links | `text-link`, buttons variant `link` add `hover:underline underline-offset-4` |
+| Gauges | `bg-gauge` (pine, règle 1): `Progress` and any bar that measures without asking for action |
+| Supporting figure | `text-support-figure` (pine-600 / pine-300): the line that situates a hero amount, « sur 1 600,00 € prévus · 12 jours restants ». Only through `Ui::StatComponent`'s `support` slot, never clickable: pine text you can click is a link (`text-link`) |
 | Status | `text-success` / `text-warning` / `text-destructive` / `text-info` / `text-accent`; tinted fills `bg-success/10`, `bg-warning/10`, `bg-destructive/10`, `bg-accent/10` |
 | Borders | `border-primary` (default), `border-secondary`/`border-subdued` (quieter), `border-divider` (hairlines) |
 | Focus | `focus-visible:ring-focus` (2px neutral ring) |
@@ -105,9 +111,8 @@ browser default blue.
 ## Typography
 
 `font-sans` = Geist with system fallback (no webfont ships — system stack in practice);
-`font-mono` = IBM Plex Mono stack for code, kbd, amounts in tables; `--font-display` = Instrument
-Serif, see "Chaleur du foyer" below (`--font-hand` is a deprecated alias for it — don't write new
-calls against it). Weights: 400/500/600 (`font-normal`/`font-medium`/`font-semibold`) — nothing
+`font-mono` = IBM Plex Mono stack for code, kbd, amounts in tables, and the `.eyebrow` (the date
+above the greeting); `--font-display` = Instrument Serif, see "Chaleur du foyer" below. Weights: 400/500/600 (`font-normal`/`font-medium`/`font-semibold`) — nothing
 heavier, and **400 only** on the serif, which ships no other weight: anything bolder is a
 synthetic bold on screen. Scale enlarged from text-sm-first to text-base-first (body 16px, was 14px):
 `text-xs` 13 · `text-sm` 15 · `text-base` 16 · `text-lg` 20 · `text-xl` 22 · `text-2xl` 26 ·
@@ -188,9 +193,16 @@ next sync:
 the four — the editorial serif accent alone carries the warmth.
 
 The serif appears in exactly **three** components: `GreetingHeader`, `CelebrationMoment`, and the
-`Empty` title (22px/400) — plus hero amounts and dashboard section titles, granted case by case in
-the views rather than through a component. Never a label, never a table cell, never under 20px.
-Grep for `--font-display`/`.greeting` before adding a fourth component.
+`Empty` title (22px/400). Outside them it is granted in two places only: the hero amount of
+`Ui::StatComponent` (`.hero-amount`, 34px, e.g. the four Budget cards) and `.section-title`
+(24px, always `text-primary`, dashboard and Aujourd'hui section headings; the status of what is
+under it belongs to the rows' badges, not to the title's color). Never a label, never a table
+cell, never under 20px, and never more than one line in a data view. Grep for
+`--font-display`/`.greeting`/`.section-title`/`.hero-amount` before granting it anywhere else.
+
+`GreetingHeader` also carries today's date above the greeting, as an `.eyebrow`: IBM Plex Mono,
+13px, `text-secondary`, capitalised (« Samedi 19 septembre »). It situates the greeting and never
+competes with it.
 
 ## Ton éditorial chaleureux
 
@@ -205,9 +217,14 @@ Grep for `--font-display`/`.greeting` before adding a fourth component.
 Ce qui n'a pas d'équivalent en amont, à préserver lors d'une future synchronisation :
 
 - Les échelles `clay-*` (marque), `crimson-*` (destructif) et `pine-*` (contrepoint froid) — voir
-  "Direction Terre cuite" et "Les trois règles" ci-dessus.
-- `--font-display` (Instrument Serif) et la classe `.greeting`. `--font-hand` n'est plus qu'un
-  alias déprécié de `--font-display`, à supprimer dans une passe ultérieure.
+  "Direction Terre cuite" et "Les quatre règles" ci-dessus.
+- `--font-display` (Instrument Serif) et les classes `.greeting`, `.section-title` et
+  `.hero-amount`, plus `.eyebrow` en IBM Plex Mono. L'alias déprécié `--font-hand` a été supprimé
+  le 2026-09-19, il n'avait plus d'appelant.
+- Le token `--gauge` (pine-600 en clair, pine-400 en sombre) pour les jauges, et
+  `--support-figure` (pine-600 / pine-300) pour le chiffre d'appui de `Ui::StatComponent`.
+- La page `/design-system/materials` (planches matière, photos dans
+  `app/assets/images/materials/`).
 - La prop `tint` sur `Avatar`/`AvatarGroup` — clé de module ou couleur CSS brute, avec repli par
   hachage sur le pool des 12 accents de module.
 - Les 4 composants "chaleur du foyer" : `ModuleMedallion`, `GreetingHeader`, `CelebrationMoment`,

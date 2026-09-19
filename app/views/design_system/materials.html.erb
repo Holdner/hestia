@@ -1,0 +1,50 @@
+<% content_for :title, "Matière — Design system — Hestia" %>
+
+<%= render(layout: "design_system/shell") do %>
+  <p class="text-xs font-medium text-subdued">Fondations</p>
+  <h1 class="mt-1 text-2xl font-semibold text-primary">Matière</h1>
+  <p class="mt-2 text-sm text-secondary max-w-prose">
+    La direction « Terre cuite » s'ouvre sur trois matières plutôt que sur des adjectifs. Quand un choix de couleur,
+    de densité ou de surface hésite, c'est à elles qu'on le compare.
+  </p>
+
+  <div class="mt-10">
+    <h2 class="text-sm font-semibold text-primary border-b border-primary pb-2">Où la photo a sa place</h2>
+    <ul class="mt-3 text-sm text-secondary space-y-1 list-disc list-inside">
+      <li>Ici, dans la documentation, comme référence de matière.</li>
+      <li>Dans le produit, uniquement la photo du foyer (<%= link_to "Household Header", design_system_component_path("household-header") %>).</li>
+      <li>Jamais en fond de section : une planche matière derrière du contenu est un dégradé déguisé.</li>
+    </ul>
+  </div>
+
+  <div class="mt-10">
+    <h2 class="text-sm font-semibold text-primary border-b border-primary pb-2">Les trois planches</h2>
+    <p class="mt-2 text-xs text-secondary">
+      Dépose <code class="font-mono text-xs">papier.jpg</code>, <code class="font-mono text-xs">terre-cuite.jpg</code>
+      et <code class="font-mono text-xs">lin.jpg</code> (PNG ou WebP acceptés aussi) dans
+      <code class="font-mono text-xs">app/assets/images/materials/</code> : cette page les détecte automatiquement.
+      Format conseillé : paysage 4:3, 1600 × 1200 px, moins de 500 Ko.
+    </p>
+    <% briefs = {
+         "papier" => [ "Papier ivoire, fibres visibles", "Les surfaces, le fond, la respiration." ],
+         "terre-cuite" => [ "Terre cuite mate, biscuit non émaillé", "La marque, les médaillons de module." ],
+         "lin" => [ "Lin écru froissé, lumière rasante", "Les neutres chauds, la densité." ]
+       } %>
+    <div class="mt-4 grid gap-4 sm:grid-cols-3">
+      <% @material_slots.each do |slug, asset_path| %>
+        <% subject, role = briefs.fetch(slug) %>
+        <figure class="flex flex-col gap-2">
+          <% if asset_path %>
+            <%= image_tag asset_path, loading: :lazy, alt: subject, class: "aspect-4/3 w-full rounded-lg border border-primary object-cover" %>
+          <% else %>
+            <div class="flex aspect-4/3 w-full flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-primary bg-surface-inset px-4 text-center">
+              <span class="text-sm text-secondary"><%= subject %></span>
+              <span class="font-mono text-xs text-subdued"><%= slug %>.jpg</span>
+            </div>
+          <% end %>
+          <figcaption class="text-xs text-secondary"><span class="font-mono"><%= slug %></span> · <%= role %></figcaption>
+        </figure>
+      <% end %>
+    </div>
+  </div>
+<% end %>

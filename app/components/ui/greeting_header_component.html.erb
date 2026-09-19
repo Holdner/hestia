@@ -1,4 +1,5 @@
 <div class="<%= cn("flex flex-col gap-0.5", @class_name) %>">
+  <time class="eyebrow mb-1" datetime="<%= @date.iso8601 %>"><%= l(@date, format: :weekday_long).upcase_first %></time>
   <h1 class="greeting"><%= @greeting %> <%= @name %></h1>
   <% if @lead %><p class="text-secondary text-xl leading-relaxed"><%= @lead %></p><% end %>
 </div>

@@ -28,6 +28,8 @@ fr:
       weekday_numeric: "%a %d/%m"
       # août 2026
       month_year: "%B %Y"
+      # mercredi 12 août
+      weekday_long: "%A %-d %B"
   time:
     formats:
       default: "%d %B %Y %Hh %Mmin %Ss"

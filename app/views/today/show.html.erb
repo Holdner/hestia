@@ -10,7 +10,7 @@
 
   <% if @plants_needing_attention.any? %>
     <section class="mb-8">
-      <h2 class="mb-3 flex items-center gap-1.5 font-medium text-destructive"><%= render Ui::ModuleMedallionComponent.new(icon: "sprout", size: :sm) %> <%= t("dashboard.show.plants_needing_attention") %></h2>
+      <h2 class="section-title mb-3 flex items-center gap-2"><%= render Ui::ModuleMedallionComponent.new(icon: "sprout", size: :sm) %> <%= t("dashboard.show.plants_needing_attention") %></h2>
       <div class="divide-y divide-primary rounded-lg border border-primary">
         <% @plants_needing_attention.each do |plant| %>
           <%= render Ui::ItemComponent.new do |item| %>
@@ -24,7 +24,7 @@
 
   <% if @fridge_items_expiring.any? %>
     <section class="mb-8">
-      <h2 class="mb-3 flex items-center gap-1.5 font-medium"><%= render Ui::ModuleMedallionComponent.new(mod: :fridge, icon: "refrigerator", size: :sm) %> <%= t("dashboard.show.fridge_expiring") %></h2>
+      <h2 class="section-title mb-3 flex items-center gap-2"><%= render Ui::ModuleMedallionComponent.new(mod: :fridge, icon: "refrigerator", size: :sm) %> <%= t("dashboard.show.fridge_expiring") %></h2>
       <div class="divide-y divide-primary rounded-lg border border-primary">
         <% @fridge_items_expiring.each do |item| %>
           <%= render Ui::ItemComponent.new do |i| %>
@@ -38,7 +38,7 @@
   <% end %>
 
   <section>
-    <h2 class="mb-3 font-medium"><%= t(".agenda_heading") %></h2>
+    <h2 class="section-title mb-3"><%= t(".agenda_heading") %></h2>
     <%= render "calendar/occurrences_list", occurrences: @occurrences, overdue_tasks: @overdue_tasks,
           overdue_vaccinations: @overdue_vaccinations, overdue_plant_care: @overdue_plant_care %>
   </section>

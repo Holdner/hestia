@@ -30,24 +30,19 @@
 
   <section class="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
     <%= render(Ui::CardComponent.new) do %>
-      <p class="text-xs text-secondary"><%= t("budget.kinds.income") %></p>
-      <p class="text-lg font-semibold"><%= money(@summary[:income]) %></p>
+      <%= render Ui::StatComponent.new(label: t("budget.kinds.income"), value: money(@summary[:income])) %>
     <% end %>
     <%= render(Ui::CardComponent.new) do %>
-      <p class="text-xs text-secondary"><%= t("budget.kinds.expense") %></p>
-      <p class="text-lg font-semibold"><%= money(@summary[:expense]) %></p>
+      <%= render Ui::StatComponent.new(label: t("budget.kinds.expense"), value: money(@summary[:expense])) %>
     <% end %>
     <%= render(Ui::CardComponent.new) do %>
-      <p class="text-xs text-secondary"><%= t("budget.kinds.savings") %></p>
-      <p class="text-lg font-semibold"><%= money(@summary[:savings]) %></p>
+      <%= render Ui::StatComponent.new(label: t("budget.kinds.savings"), value: money(@summary[:savings])) %>
     <% end %>
     <%= render(Ui::CardComponent.new) do %>
-      <div class="mb-1 flex items-center justify-between">
-        <p class="text-xs text-secondary"><%= t(".remaining_label") %></p>
-        <%= render(Ui::BadgeComponent.new(variant: health_variant(@summary))) { t(".savings_rate_label", rate: @summary[:savings_rate]) } %>
-      </div>
-      <p class="mb-2 text-lg font-semibold"><%= money(@summary[:remaining]) %></p>
-      <%= render Ui::ProgressComponent.new(value: [ @summary[:savings_rate], 0 ].max, max: 100) %>
+      <%= render(Ui::StatComponent.new(label: t(".remaining_label"), value: money(@summary[:remaining]))) do |stat| %>
+        <% stat.with_badge { render(Ui::BadgeComponent.new(variant: health_variant(@summary))) { t(".savings_rate_label", rate: @summary[:savings_rate]) } } %>
+        <% stat.with_gauge { render Ui::ProgressComponent.new(value: [ @summary[:savings_rate], 0 ].max, max: 100) } %>
+      <% end %>
     <% end %>
   </section>
 

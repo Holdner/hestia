@@ -39,4 +39,14 @@ class DesignSystemControllerTest < ActionDispatch::IntegrationTest
       assert_includes @response.body, slug
     end
   end
+
+  test "materials page renders the three slots, and says where the photos go" do
+    get design_system_materials_path
+    assert_response :success
+
+    assert_includes @response.body, "app/assets/images/materials/"
+    %w[papier terre-cuite lin].each do |slug|
+      assert_includes @response.body, "#{slug}.jpg"
+    end
+  end
 end
