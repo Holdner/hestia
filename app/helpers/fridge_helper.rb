@@ -3,7 +3,6 @@ module FridgeHelper
   EXPIRATION_BADGE_VARIANTS = {
     expired:      :destructive,
     urgent:       :destructive,
-    destructive:  :destructive,
     soon:         :warning,
     ok:           :success,
     none:         :secondary

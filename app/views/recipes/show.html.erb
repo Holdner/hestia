@@ -17,7 +17,7 @@
   <%= render "shared/flash" %>
   <% if flash[:shopping_list_id] %>
     <p class="-mt-2 mb-4 text-sm">
-      <%= link_to t(".view_shopping_list_link"), shopping_list_path(flash[:shopping_list_id]), class: "underline" %>
+      <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, icon: "shopping-cart", href: shopping_list_path(flash[:shopping_list_id]))) { t(".view_shopping_list_link") } %>
     </p>
   <% end %>
 

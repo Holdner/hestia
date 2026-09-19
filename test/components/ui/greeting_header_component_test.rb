@@ -1,10 +1,18 @@
 require "test_helper"
 
 class Ui::GreetingHeaderComponentTest < ViewComponent::TestCase
-  test "renders the greeting and name as an h1 in the handwritten font" do
+  test "renders the greeting and name as an h1 in the editorial serif" do
     render_inline(Ui::GreetingHeaderComponent.new(name: "Camille", greeting: "Bonjour"))
 
     assert_selector "h1.greeting", text: "Bonjour Camille"
+  end
+
+  test "renders the date above the greeting as a mono eyebrow" do
+    I18n.with_locale(:fr) do
+      render_inline(Ui::GreetingHeaderComponent.new(name: "Camille", greeting: "Bonjour", date: Date.new(2026, 8, 12)))
+    end
+
+    assert_selector "time.eyebrow[datetime='2026-08-12']", text: "Mercredi 12 août"
   end
 
   test "renders the lead line when given" do

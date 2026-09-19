@@ -9,7 +9,7 @@
 
   <header class="mb-4 flex flex-wrap items-center justify-between gap-3">
     <h1 class="flex items-center gap-2 text-2xl font-semibold"><%= lucide_icon("utensils", css_class: "size-6") %> <%= t(".heading") %></h1>
-    <div class="flex items-center gap-2">
+    <div class="flex flex-wrap items-center gap-2">
       <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: menu_path(week: @week_start - 1.week))) { t(".previous_week") } %>
       <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: menu_path)) { t(".this_week") } %>
       <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: menu_path(week: @week_start + 1.week))) { t(".next_week") } %>
@@ -26,7 +26,7 @@
     <% end %>
   <% elsif flash[:shopping_list_id] %>
     <p class="-mt-2 mb-4 text-sm">
-      <%= link_to t(".view_shopping_list_link"), shopping_list_path(flash[:shopping_list_id]), class: "underline" %>
+      <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, icon: "shopping-cart", href: shopping_list_path(flash[:shopping_list_id]))) { t(".view_shopping_list_link") } %>
     </p>
   <% end %>
 

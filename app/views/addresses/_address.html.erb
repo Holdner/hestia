@@ -12,8 +12,11 @@
     </div>
   <% end %>
 
-  <div class="min-w-0 flex-1">
-    <div class="flex items-center gap-2">
+  <%# grow + basis-48, not flex-1: with a basis of 0 the text gave way to
+      the action icons, down to one word a line on a phone. The actions wrap
+      under it instead, pushed right by ml-auto. %>
+  <div class="min-w-0 grow basis-48">
+    <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
       <span class="font-medium"><%= address.name %></span>
       <%= render(Ui::BadgeComponent.new(variant: :secondary)) { address_type_label(address.address_type) } %>
       <% if address.rating %><span class="text-xs text-warning"><%= address_rating_stars(address.rating) %></span><% end %>
@@ -23,7 +26,7 @@
     <% end %>
   </div>
 
-  <div class="flex shrink-0 items-center gap-2 text-sm">
+  <div class="ml-auto flex shrink-0 items-center gap-2 text-sm">
     <% if address.phone.present? %>
       <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon, href: "tel:#{address.phone}",
             html_options: { title: address.phone, aria: { label: t(".call_aria", phone: address.phone) } })) { lucide_icon("phone", css_class: "size-4") } %>
@@ -34,8 +37,8 @@
     <% end %>
     <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon, href: edit_address_path(address),
           html_options: { aria: { label: t(".edit_aria", name: address.name) } })) { lucide_icon("pencil", css_class: "size-4") } %>
-    <%= button_to address_path(address), method: :delete, class: "cursor-pointer text-subdued hover:text-destructive",
-          aria: { label: t(".delete_aria", name: address.name) },
-          form: { data: { turbo_confirm: t(".delete_confirm", name: address.name) } } do %><%= lucide_icon("x", css_class: "size-4") %><% end %>
+    <%= render(Ui::ButtonToComponent.new(address_path(address), method: :delete, variant: :ghost, size: :icon,
+          html_options: { aria: { label: t(".delete_aria", name: address.name) },
+                          form: { data: { turbo_confirm: t(".delete_confirm", name: address.name) } } })) { lucide_icon("x", css_class: "size-4") } %>
   </div>
 <% end %>

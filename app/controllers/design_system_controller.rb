@@ -28,6 +28,20 @@ class DesignSystemController < ApplicationController
     end
   end
 
+  # The three reference materials of the "Terre cuite" direction, photographed.
+  # Documentation only: photography stays out of the product (bar the
+  # household photo), so these are read here and nowhere else.
+  MATERIAL_SLOTS = %w[papier terre-cuite lin].freeze
+
+  def materials
+    materials_dir = Rails.root.join("app/assets/images/materials")
+    @material_slots = MATERIAL_SLOTS.index_with do |slug|
+      %w[jpg jpeg png webp].map { |ext| "#{slug}.#{ext}" }
+        .find { |file| materials_dir.join(file).exist? }
+        &.then { |file| "materials/#{file}" }
+    end
+  end
+
   def component
     @entry = DesignSystemRegistry.find(params[:id])
     raise ActionController::RoutingError, "Unknown design system component: #{params[:id]}" unless @entry

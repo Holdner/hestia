@@ -6,8 +6,10 @@
 
   <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
     <h1 class="flex items-center gap-2 text-2xl font-semibold"><%= lucide_icon("notebook-pen", css_class: "size-6") %> <%= t(".title") %></h1>
-    <div class="flex items-center gap-2">
-      <%= form_with url: notes_path, method: :get, data: { controller: "debounced-search" } do |form| %>
+    <%# flex-wrap + a search that keeps basis-40: on a phone the four controls
+        beside it had squeezed the search field to a sliver. %>
+    <div class="flex flex-wrap items-center gap-2">
+      <%= form_with url: notes_path, method: :get, class: "min-w-0 grow basis-40", data: { controller: "debounced-search" } do |form| %>
         <%= form.hidden_field :archived, value: ("1" if @archived) %>
         <%= render Ui::InputComponent.new(type: "search", name: "q", value: @query, placeholder: t(".search_placeholder"),
               html_options: { id: "notes_q", data: { action: "input->debounced-search#submit" } }) %>

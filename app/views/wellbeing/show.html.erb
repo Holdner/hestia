@@ -32,10 +32,10 @@
       <%= render(Ui::CardComponent.new) do %>
         <div class="flex flex-wrap items-center justify-between gap-2">
           <h2 class="font-medium"><%= t(".my_profile") %></h2>
-          <%= link_to t(".edit_profile"), edit_account_path, class: "text-sm underline" %>
+          <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: edit_account_path)) { t(".edit_profile") } %>
         </div>
         <% if @latest_weight && @profile.bmi(@latest_weight) %>
-          <p class="mt-2 text-sm"><%= t(".bmi_prefix") %> <span class="font-semibold"><%= @profile.bmi(@latest_weight) %></span> <%= t(".bmi_suffix", weight: @latest_weight) %></p>
+          <p class="mt-2 text-sm"><%= t(".bmi_prefix") %> <span class="font-semibold"><%= decimal(@profile.bmi(@latest_weight), precision: 1) %></span> <%= t(".bmi_suffix", weight: decimal(@latest_weight, precision: 1)) %></p>
         <% end %>
       <% end %>
     </section>
@@ -45,7 +45,7 @@
     <section class="mb-8">
       <h2 class="mb-2 flex items-center gap-1.5 font-medium"><%= lucide_icon("trending-up", css_class: "size-5") %> <%= t(".chart_heading") %></h2>
       <%= render(Ui::CardComponent.new) do %>
-        <%= render Ui::ChartComponent.new(data: @weight_chart_data, variant: :line, color: "wellbeing") %>
+        <%= render Ui::ChartComponent.new(data: @weight_chart_data, variant: :line) %>
       <% end %>
     </section>
   <% end %>
@@ -53,21 +53,21 @@
   <section class="mb-8">
     <div class="mb-2 flex items-center justify-between">
       <h2 class="flex items-center gap-1.5 font-medium"><%= lucide_icon("scale", css_class: "size-5") %> <%= t(".weight") %></h2>
-      <%= link_to t(".see_full_history"), history_wellbeing_path, class: "text-sm underline" %>
+      <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: history_wellbeing_path)) { t(".see_full_history") } %>
     </div>
     <%= render(Ui::CardComponent.new) do %>
       <% if @latest_weight && @profile.goal_weight.present? %>
         <div class="mb-4 grid grid-cols-3 gap-2 text-center">
           <div>
-            <p class="text-lg font-semibold"><%= @latest_weight %> kg</p>
+            <p class="text-lg font-semibold"><%= decimal(@latest_weight, precision: 1) %> kg</p>
             <p class="text-xs text-subdued"><%= t(".current_weight_label") %></p>
           </div>
           <div>
-            <p class="text-lg font-semibold"><%= @profile.goal_weight %> kg</p>
+            <p class="text-lg font-semibold"><%= decimal(@profile.goal_weight, precision: 1) %> kg</p>
             <p class="text-xs text-subdued"><%= t(".goal_weight_label") %></p>
           </div>
           <div>
-            <p class="text-lg font-semibold"><%= format("%+.1f", @latest_weight - @profile.goal_weight) %> kg</p>
+            <p class="text-lg font-semibold"><%= decimal(@latest_weight - @profile.goal_weight, precision: 1, signed: true) %> kg</p>
             <p class="text-xs text-subdued"><%= t(".remaining_to_goal_label") %></p>
           </div>
         </div>
@@ -77,22 +77,21 @@
           <% @weight_entries.each do |entry| %>
             <li>
               <%= render(Ui::ItemComponent.new) do |item| %>
-                <% item.with_title { "#{l(entry.recorded_on, format: :numeric)} — #{entry.weight} kg" } %>
+                <% item.with_title { "#{l(entry.recorded_on, format: :numeric)} — #{decimal(entry.weight, precision: 1)} kg" } %>
                 <% if (delta = @weight_deltas[entry.id]) %>
                   <% item.with_description do %>
                     <%= render(Ui::BadgeComponent.new(variant: weight_delta_variant(delta, @goal_direction))) do %>
                       <%= lucide_icon(delta.positive? ? "trending-up" : "trending-down", css_class: "size-3") %>
-                      <%= format("%+.1f kg", delta) %>
+                      <%= decimal(delta, precision: 1, signed: true) %> kg
                     <% end %>
                   <% end %>
                 <% end %>
                 <% item.with_trailing do %>
                   <div class="flex shrink-0 items-center gap-1">
-                    <%= link_to edit_weight_entry_path(entry), "aria-label": t(".edit_weight_entry_aria", date: l(entry.recorded_on, format: :numeric)), class: "text-subdued hover:text-primary" do %>
-                      <%= lucide_icon("pencil", css_class: "size-3.5") %>
-                    <% end %>
+                    <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon, href: edit_weight_entry_path(entry),
+                          html_options: { aria: { label: t(".edit_weight_entry_aria", date: l(entry.recorded_on, format: :numeric)) } })) { lucide_icon("pencil", css_class: "size-4") } %>
                     <%= form_with url: weight_entry_path(entry), method: :delete, data: { turbo_confirm: t(".delete_weight_entry_confirm") } do %>
-                      <%= render(Ui::ButtonComponent.new(variant: :destructive, size: :icon, type: "submit",
+                      <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon, type: "submit",
                             html_options: { aria: { label: t(".delete_weight_entry_aria", date: l(entry.recorded_on, format: :numeric)) } })) { lucide_icon("x", css_class: "size-4") } %>
                     <% end %>
                   </div>
@@ -123,7 +122,7 @@
   <section class="mb-8">
     <div class="mb-2 flex items-center justify-between">
       <h2 class="flex items-center gap-1.5 font-medium"><%= lucide_icon("dumbbell", css_class: "size-5") %> <%= t(".workouts") %></h2>
-      <%= link_to t(".see_full_history"), history_wellbeing_path, class: "text-sm underline" %>
+      <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: history_wellbeing_path)) { t(".see_full_history") } %>
     </div>
     <%= render(Ui::CardComponent.new) do %>
       <% if @workout_entries.any? %>
@@ -136,11 +135,10 @@
                 <% end %>
                 <% item.with_trailing do %>
                   <div class="flex shrink-0 items-center gap-1">
-                    <%= link_to edit_workout_entry_path(entry), "aria-label": t(".edit_workout_entry_aria", exercise: entry.exercise), class: "text-subdued hover:text-primary" do %>
-                      <%= lucide_icon("pencil", css_class: "size-3.5") %>
-                    <% end %>
+                    <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon, href: edit_workout_entry_path(entry),
+                          html_options: { aria: { label: t(".edit_workout_entry_aria", exercise: entry.exercise) } })) { lucide_icon("pencil", css_class: "size-4") } %>
                     <%= form_with url: workout_entry_path(entry), method: :delete, data: { turbo_confirm: t(".delete_workout_entry_confirm") } do %>
-                      <%= render(Ui::ButtonComponent.new(variant: :destructive, size: :icon, type: "submit",
+                      <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon, type: "submit",
                             html_options: { aria: { label: t(".delete_workout_entry_aria", exercise: entry.exercise) } })) { lucide_icon("x", css_class: "size-4") } %>
                     <% end %>
                   </div>

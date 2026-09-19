@@ -1,4 +1,4 @@
-<%= tag.div id: dom_id(prepared_dish), class: "rounded-lg border border-primary" do %>
+<%= tag.div id: dom_id(prepared_dish) do %>
   <%= render(Ui::ItemComponent.new) do |item| %>
     <% if prepared_dish.photo.attached? %>
       <% item.with_leading { image_tag prepared_dish.photo.variant(resize_to_limit: [ 48, 48 ]), alt: "", loading: :lazy, class: "size-12 rounded-md object-cover" } %>

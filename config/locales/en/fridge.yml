@@ -52,6 +52,7 @@ en:
       delete_aria: "Delete"
       delete_confirm: "Delete this food item?"
     edit:
+      heading: "Edit food"
       name_label: "Food"
       quantity_label: "Qty"
       unit_label: "Unit"

@@ -14,15 +14,16 @@ let current = null
 
 export default class extends Controller {
   static targets = [ "dialog", "title", "message", "accept" ]
+  static values = { acceptLabel: String, destructiveClass: String, defaultClass: String }
 
   connect() {
     current = this
     // Set once, and left in place: Turbo.config is global, and a page that
     // somehow renders without this dialog should fall back to the native
     // confirm rather than silently resolving every confirmation to true.
-    Turbo.config.forms.confirm = (message) => {
+    Turbo.config.forms.confirm = (message, element) => {
       if (!current) return Promise.resolve(window.confirm(message))
-      return current.ask(message)
+      return current.ask(message, element)
     }
   }
 
@@ -31,7 +32,13 @@ export default class extends Controller {
     this.#settle(false)
   }
 
-  ask(message) {
+  // element is the form Turbo is about to submit: its data-turbo-confirm-label
+  // and data-turbo-confirm-variant, when set, reword and recolour the accept
+  // button for this one question.
+  ask(message, element) {
+    const { turboConfirmLabel: label, turboConfirmVariant: variant } = element?.dataset || {}
+    this.acceptTarget.textContent = label || this.acceptLabelValue
+    this.acceptTarget.className = variant === "default" ? this.defaultClassValue : this.destructiveClassValue
     this.messageTarget.textContent = message || ""
     // No message means no second line to read; hiding it keeps the dialog from
     // showing an empty paragraph's worth of space under the title.

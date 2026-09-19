@@ -1,0 +1,9 @@
+<span class="<%= cn("on-tone inline-flex h-8 items-center gap-0.5 whitespace-nowrap rounded-full text-sm font-medium",
+                    @active ? "bg-button-primary text-inverse" : "bg-surface-inset text-primary",
+                    actions? ? "pl-3 pr-1" : "px-3") %>">
+  <%= link_to @href, class: "inline-flex h-full items-center gap-1.5 pr-1", aria: { current: (@active ? "true" : nil) } do %>
+    <% if @dot_class %><span class="size-2 shrink-0 rounded-full <%= @dot_class %>" aria-hidden="true"></span><% end %>
+    <%= @label %>
+  <% end %>
+  <% actions.each do |action| %><%= action %><% end %>
+</span>

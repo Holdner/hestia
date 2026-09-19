@@ -4,7 +4,7 @@
 <div class="mt-10 max-w-5xl mx-auto px-4">
   <div class="mb-4"><%= module_breadcrumb(:circles, [ @circle.name, nil ], module_path: circles_path) %></div>
 
-  <header class="mb-4 flex items-start justify-between">
+  <header class="mb-4 flex flex-wrap items-start justify-between gap-3">
     <div>
       <h1 class="flex items-center gap-2 text-2xl font-semibold"><%= lucide_icon("users", css_class: "size-6") %> <%= @circle.name %></h1>
       <div class="mt-1 flex -space-x-2">
@@ -41,7 +41,7 @@
       </div>
       <% if @has_more %>
         <div class="mt-3 text-center">
-          <%= link_to t(".load_more"), circle_path(@circle, page: @page + 1), class: "text-sm text-secondary underline" %>
+          <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: circle_path(@circle, page: @page + 1))) { t(".load_more") } %>
         </div>
       <% end %>
     <% else %>

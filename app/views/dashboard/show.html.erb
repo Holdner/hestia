@@ -20,7 +20,7 @@
 
   <% if @vehicles_needing_attention.any? %>
     <section class="mb-8">
-      <h2 class="mb-3 flex items-center gap-1.5 font-medium text-destructive"><%= render Ui::ModuleMedallionComponent.new(mod: :vehicles, icon: "triangle-alert", size: :sm) %> <%= t(".vehicles_needing_attention") %></h2>
+      <h2 class="section-title mb-3 flex items-center gap-2"><%= render Ui::ModuleMedallionComponent.new(mod: :vehicles, icon: "triangle-alert", size: :sm) %> <%= t(".vehicles_needing_attention") %></h2>
       <div class="divide-y divide-primary rounded-lg border border-primary">
         <% @vehicles_needing_attention.each do |vehicle| %>
           <%= render Ui::ItemComponent.new do |item| %>
@@ -35,7 +35,7 @@
 
   <% if @plants_needing_attention&.any? %>
     <section class="mb-8">
-      <h2 class="mb-3 flex items-center gap-1.5 font-medium text-destructive"><%= render Ui::ModuleMedallionComponent.new(icon: "sprout", size: :sm) %> <%= t(".plants_needing_attention") %></h2>
+      <h2 class="section-title mb-3 flex items-center gap-2"><%= render Ui::ModuleMedallionComponent.new(icon: "sprout", size: :sm) %> <%= t(".plants_needing_attention") %></h2>
       <div class="divide-y divide-primary rounded-lg border border-primary">
         <% @plants_needing_attention.each do |plant| %>
           <%= render Ui::ItemComponent.new do |item| %>
@@ -49,7 +49,7 @@
 
   <% if @overdue_tasks&.any? %>
     <section class="mb-8">
-      <h2 class="mb-3 flex items-center gap-1.5 font-medium text-destructive"><%= render Ui::ModuleMedallionComponent.new(mod: :tasks, icon: "square-check", size: :sm) %> <%= t(".overdue_tasks") %></h2>
+      <h2 class="section-title mb-3 flex items-center gap-2"><%= render Ui::ModuleMedallionComponent.new(mod: :tasks, icon: "square-check", size: :sm) %> <%= t(".overdue_tasks") %></h2>
       <div class="divide-y divide-primary rounded-lg border border-primary">
         <% @overdue_tasks.each do |task| %>
           <%= render Ui::ItemComponent.new do |item| %>
@@ -64,7 +64,7 @@
 
   <% if @fridge_items_expiring&.any? %>
     <section class="mb-8">
-      <h2 class="mb-3 flex items-center gap-1.5 font-medium"><%= render Ui::ModuleMedallionComponent.new(mod: :fridge, icon: "refrigerator", size: :sm) %> <%= t(".fridge_expiring") %></h2>
+      <h2 class="section-title mb-3 flex items-center gap-2"><%= render Ui::ModuleMedallionComponent.new(mod: :fridge, icon: "refrigerator", size: :sm) %> <%= t(".fridge_expiring") %></h2>
       <div class="divide-y divide-primary rounded-lg border border-primary">
         <% @fridge_items_expiring.each do |item| %>
           <%= render Ui::ItemComponent.new do |i| %>
@@ -100,7 +100,7 @@
 
   <% if @upcoming_events&.any? %>
     <section class="mb-8">
-      <h2 class="mb-3 flex items-center gap-1.5 font-medium"><%= render Ui::ModuleMedallionComponent.new(mod: :calendar, icon: "calendar", size: :sm) %> <%= t(".upcoming_events") %></h2>
+      <h2 class="section-title mb-3 flex items-center gap-2"><%= render Ui::ModuleMedallionComponent.new(mod: :calendar, icon: "calendar", size: :sm) %> <%= t(".upcoming_events") %></h2>
       <div class="divide-y divide-primary rounded-lg border border-primary">
         <% @upcoming_events.each do |time, event| %>
           <%= render Ui::ItemComponent.new do |item| %>
@@ -114,7 +114,7 @@
 
   <% if @recipe_suggestions&.any? %>
     <section class="mb-8">
-      <h2 class="mb-3 flex items-center gap-1.5 font-medium"><%= render Ui::ModuleMedallionComponent.new(mod: :recipes, icon: "chef-hat", size: :sm) %> <%= t(".recipe_suggestions") %></h2>
+      <h2 class="section-title mb-3 flex items-center gap-2"><%= render Ui::ModuleMedallionComponent.new(mod: :recipes, icon: "chef-hat", size: :sm) %> <%= t(".recipe_suggestions") %></h2>
       <p class="mb-2 text-sm text-secondary"><%= t(".recipe_suggestions_description") %></p>
       <div class="divide-y divide-primary rounded-lg border border-primary">
         <% @recipe_suggestions.each do |recipe| %>
@@ -128,7 +128,7 @@
 
   <% if @other_households.any? %>
     <section class="mb-8">
-      <h2 class="mb-3 font-medium"><%= t(".switch_household") %></h2>
+      <h2 class="section-title mb-3"><%= t(".switch_household") %></h2>
       <ul class="space-y-2">
         <% @other_households.each do |household| %>
           <li>
@@ -139,7 +139,7 @@
     </section>
   <% end %>
 
-  <section class="flex gap-3">
+  <section class="flex flex-wrap gap-3">
     <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: new_household_path)) { t(".create_household") } %>
     <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: new_membership_path)) { t(".join_household") } %>
   </section>

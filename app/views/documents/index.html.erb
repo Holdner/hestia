@@ -27,19 +27,18 @@
       floor (24px) and says so — see touchFloorFor in
       script/visual_check/measure.js. %>
   <section class="mb-4 flex flex-wrap items-center gap-2" data-touch-target="compact">
-    <%= render(Ui::BadgeComponent.new(variant: @folder ? :secondary : :default)) { link_to t(".all"), documents_path(q: @query.presence) } %>
+    <%= render Ui::FilterChipComponent.new(label: t(".all"), href: documents_path(q: @query.presence), active: @folder.nil?) %>
     <% @folders.each do |folder| %>
-      <%= render(Ui::BadgeComponent.new(variant: @folder == folder ? :default : :secondary)) do %>
-        <% if (dot = folder_color_dot_class(folder.color)) %>
-          <span class="size-2 rounded-full <%= dot %>"></span>
+      <%= render(Ui::FilterChipComponent.new(label: folder.name, href: documents_path(folder_id: folder.id, q: @query.presence),
+            active: @folder == folder, dot_class: folder_color_dot_class(folder.color))) do |chip| %>
+        <% chip.with_action do %>
+          <%= link_to edit_document_folder_path(folder), class: Ui::FilterChipComponent::ACTION_CLASSES,
+                "aria-label": t(".edit_folder_aria", name: folder.name) do %><%= lucide_icon("pencil", css_class: "size-3.5") %><% end %>
         <% end %>
-        <%= link_to folder.name, documents_path(folder_id: folder.id, q: @query.presence) %>
-        <%= link_to edit_document_folder_path(folder), "aria-label": t(".edit_folder_aria", name: folder.name), class: "text-subdued hover:text-primary" do %>
-          <%= lucide_icon("pencil", css_class: "size-4") %>
-        <% end %>
-        <%= form_with url: document_folder_path(folder), method: :delete, class: "inline", data: { turbo_confirm: t(".delete_folder_confirm") } do %>
-          <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :icon, type: "submit",
-                html_options: { aria: { label: t(".delete_folder_aria", name: folder.name) } })) { lucide_icon("x", css_class: "size-4") } %>
+        <% chip.with_action do %>
+          <%= button_to document_folder_path(folder), method: :delete, class: Ui::FilterChipComponent::ACTION_CLASSES,
+                aria: { label: t(".delete_folder_aria", name: folder.name) },
+                form: { class: "inline-flex", data: { turbo_confirm: t(".delete_folder_confirm") } } do %><%= lucide_icon("x", css_class: "size-3.5") %><% end %>
         <% end %>
       <% end %>
     <% end %>
@@ -54,18 +53,23 @@
 
   <%= render(Ui::CardComponent.new(class_name: "mb-6")) do |card| %>
     <% card.with_title { t(".add_document_heading") } %>
-    <%= form_with model: @document, url: documents_path, multipart: true, class: "flex flex-wrap items-end gap-2" do |form| %>
-      <%= render Ui::InputComponent.new(name: "document[name]", value: @document.name, placeholder: t(".name_placeholder"),
-            html_options: { id: "document_name", required: true, class: "flex-1" }) %>
-      <%= render Ui::NativeSelectComponent.new(name: "document[document_folder_id]",
-            options: [ [ t(".folder_blank"), "" ] ] + @folders.map { |folder| [ folder.name, folder.id ] },
-            selected: @document.document_folder_id, html_options: { id: "document_document_folder_id", class: "!w-auto" }) %>
-      <%= render Ui::NativeSelectComponent.new(name: "document[documentable_key]", options: @documentable_options,
-            html_options: { id: "document_documentable_key", class: "!w-auto", "aria-label": t(".documentable_label") }) %>
-      <div class="w-40">
-        <%= render Ui::FileUploadComponent.new(name: "document[file]", accept: "application/pdf,image/*",
-              html_options: { id: "document_file", required: true }) %>
+    <%# Three rows, not one flex-wrap line: the w-40 drop zone sat between the
+        selects and the button and wrapped wherever it happened to fall,
+        leaving a tall empty card on desktop and a squeezed one on a phone. %>
+    <%= form_with model: @document, url: documents_path, multipart: true, class: "space-y-3" do |form| %>
+      <div class="flex flex-wrap gap-2">
+        <div class="min-w-0 grow basis-48">
+          <%= render Ui::InputComponent.new(name: "document[name]", value: @document.name, placeholder: t(".name_placeholder"),
+                html_options: { id: "document_name", required: true }) %>
+        </div>
+        <%= render Ui::NativeSelectComponent.new(name: "document[document_folder_id]",
+              options: [ [ t(".folder_blank"), "" ] ] + @folders.map { |folder| [ folder.name, folder.id ] },
+              selected: @document.document_folder_id, html_options: { id: "document_document_folder_id", class: "!w-auto" }) %>
+        <%= render Ui::NativeSelectComponent.new(name: "document[documentable_key]", options: @documentable_options,
+              html_options: { id: "document_documentable_key", class: "!w-auto", "aria-label": t(".documentable_label") }) %>
       </div>
+      <%= render Ui::FileUploadComponent.new(name: "document[file]", accept: "application/pdf,image/*",
+            html_options: { id: "document_file", required: true }) %>
       <%= render(Ui::ButtonComponent.new(type: "submit")) { t(".upload") } %>
     <% end %>
   <% end %>

@@ -17,7 +17,7 @@
                 class: "flex size-6 items-center justify-center cursor-pointer text-subdued hover:text-primary", aria: { label: t(".move_down_aria") } do %><%= lucide_icon("chevron-down", css_class: "size-3") %><% end %>
         </div>
         <%= button_to toggle_shopping_list_item_path(shopping_list_item.shopping_list, shopping_list_item),
-              method: :patch, class: "shrink-0 cursor-pointer",
+              method: :patch, class: "flex size-9 shrink-0 cursor-pointer items-center justify-center",
               aria: { label: shopping_list_item.checked ? t(".uncheck_aria") : t(".check_aria") } do %>
           <span class="flex size-5 items-center justify-center rounded border <%= shopping_list_item.checked ? "border-button-primary bg-button-primary text-inverse" : "border-primary" %>">
             <%= lucide_icon("check", css_class: "size-3.5") if shopping_list_item.checked %>
@@ -31,7 +31,7 @@
         <%= shopping_list_item.name %>
         <% if shopping_list_item.quantity.present? %>
           <span class="text-sm text-secondary">
-            — <%= shopping_list_item.quantity.to_s.sub(/\.0+\z/, "") %> <%= shopping_list_item.unit %>
+            — <%= decimal(shopping_list_item.quantity) %> <%= shopping_list_item.unit %>
           </span>
         <% end %>
       </span>
@@ -50,7 +50,7 @@
               <input type="date" name="expires_on" value="<%= Date.current %>" title="<%= t(".expires_on_title") %>" aria-label="<%= t(".expires_on_title") %>"
                      class="h-[var(--control-h-sm)] w-28 rounded border border-primary bg-container px-1 text-xs text-primary">
             </label>
-            <button type="submit" class="shrink-0 cursor-pointer text-subdued hover:text-primary"
+            <button type="submit" class="flex size-9 shrink-0 cursor-pointer items-center justify-center text-subdued hover:text-primary"
                     title="<%= t(".move_to_fridge_title") %>" aria-label="<%= t(".move_to_fridge_title") %>">
               <%= lucide_icon("refrigerator", css_class: "size-4") %>
             </button>

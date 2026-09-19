@@ -6,7 +6,7 @@
 
   <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
     <h1 class="flex items-center gap-2 text-2xl font-semibold"><%= lucide_icon("cake", css_class: "size-6") %> <%= t(".title") %></h1>
-    <div class="flex items-center gap-2">
+    <div class="flex flex-wrap items-center gap-2">
       <%= render(Ui::ButtonComponent.new(variant: :outline, href: calendar_contacts_path)) { t(".calendar_link") } %>
       <%= render(Ui::ButtonComponent.new(href: new_contact_path)) { t(".new_contact") } %>
       <%= render Ui::ViewToggleComponent.new(mode: @view_mode, path_for: ->(mode) { contacts_path(tag_id: @tag&.id, view: mode) }) %>
@@ -20,13 +20,13 @@
       floor (24px) and says so — see touchFloorFor in
       script/visual_check/measure.js. %>
   <section class="mb-6 flex flex-wrap items-center gap-2" data-touch-target="compact">
-    <%= render(Ui::BadgeComponent.new(variant: @tag ? :secondary : :default)) { link_to t(".all_filter"), contacts_path } %>
+    <%= render Ui::FilterChipComponent.new(label: t(".all_filter"), href: contacts_path, active: @tag.nil?) %>
     <% @tags.each do |tag| %>
-      <%= render(Ui::BadgeComponent.new(variant: @tag == tag ? :default : :secondary)) do %>
-        <%= link_to "#{tag.emoji} #{tag.name}".strip, contacts_path(tag_id: tag.id) %>
-        <%= form_with url: contact_tag_path(tag), method: :delete, class: "inline", data: { turbo_confirm: t(".delete_tag_confirm", name: tag.name) } do %>
-          <%= render(Ui::ButtonComponent.new(variant: :ghost, size: :sm, type: "submit",
-                html_options: { aria: { label: t(".delete_tag_aria", name: tag.name) } })) { lucide_icon("x", css_class: "size-3.5") } %>
+      <%= render(Ui::FilterChipComponent.new(label: "#{tag.emoji} #{tag.name}".strip, href: contacts_path(tag_id: tag.id), active: @tag == tag)) do |chip| %>
+        <% chip.with_action do %>
+          <%= button_to contact_tag_path(tag), method: :delete, class: Ui::FilterChipComponent::ACTION_CLASSES,
+                aria: { label: t(".delete_tag_aria", name: tag.name) },
+                form: { class: "inline-flex", data: { turbo_confirm: t(".delete_tag_confirm", name: tag.name) } } do %><%= lucide_icon("x", css_class: "size-3.5") %><% end %>
         <% end %>
       <% end %>
     <% end %>
@@ -45,9 +45,9 @@
     <% end %>
   </section>
 
-  <div id="contacts">
-    <%= render @contacts %>
-  </div>
+  <%# One line on purpose: with nothing inside, :empty (empty:hidden) drops the
+      outline instead of drawing an empty box over the empty state below. %>
+  <div id="contacts" class="<%= Ui::ViewToggleComponent.container_classes(@view_mode) %> empty:hidden"><%= render @contacts %></div>
   <% if @contacts.empty? %>
     <%= render(Ui::EmptyComponent.new) { |empty| empty.with_description { t(".none") } } %>
   <% end %>

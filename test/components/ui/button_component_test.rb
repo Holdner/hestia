@@ -124,6 +124,19 @@ class Ui::ButtonComponentTest < ViewComponent::TestCase
     assert_no_selector "a.no-underline"
   end
 
+  test "centres its label by default, so a full-width button doesn't left-align it" do
+    render_inline(Ui::ButtonComponent.new(html_options: { class: "w-full" })) { "Créer le foyer" }
+
+    assert_selector "button.justify-center.w-full"
+  end
+
+  test "a justify-* from the caller replaces the default instead of competing with it" do
+    render_inline(Ui::ButtonComponent.new(html_options: { class: "w-full justify-start" })) { "Rechercher" }
+
+    assert_selector "button.justify-start"
+    refute_selector "button.justify-center"
+  end
+
   private
 
   def variant_fragment(variant)

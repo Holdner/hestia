@@ -1,49 +1,56 @@
 <% if local_assigns[:overdue_tasks] && overdue_tasks.any? %>
-  <div class="mb-4 rounded-lg border border-destructive/30 bg-destructive-subtle/40 p-3">
-    <h2 class="mb-2 flex items-center gap-1.5 text-sm font-semibold text-destructive"><%= lucide_icon("triangle-alert", css_class: "size-4") %> <%= t("calendar.show.overdue_tasks_heading") %></h2>
-    <ul class="space-y-1 text-sm">
+  <%# Ui::Alert, not a hand-painted pink box: that one filled the whole block
+      in crimson and left its links in the global pine, pine on pink. The
+      alert keeps the crimson to its border, icon and title, and its on-tone
+      root makes the links read as the list they are. %>
+  <%= render(Ui::AlertComponent.new(variant: :destructive, class_name: "mb-4")) do |alert| %>
+    <% alert.with_icon { lucide_icon("triangle-alert", css_class: "size-4") } %>
+    <% alert.with_title { t("calendar.show.overdue_tasks_heading") } %>
+    <ul class="mt-2 space-y-1">
       <% overdue_tasks.each do |task| %>
         <li>
           <%= link_to edit_task_path(task), class: "hover:underline" do %>
-            <%= "#{task.emoji} " if task.emoji.present? %><%= task.title %>
-            <span class="text-destructive/70">— <%= t("calendar.show.overdue_since", date: l(task.due_on, format: :short)) %></span>
+            <span class="text-primary"><%= "#{task.emoji} " if task.emoji.present? %><%= task.title %></span>
+            — <%= t("calendar.show.overdue_since", date: l(task.due_on, format: :short)) %>
           <% end %>
         </li>
       <% end %>
     </ul>
-  </div>
+  <% end %>
 <% end %>
 
 <% if local_assigns[:overdue_vaccinations] && overdue_vaccinations.any? %>
-  <div class="mb-4 rounded-lg border border-destructive/30 bg-destructive-subtle/40 p-3">
-    <h2 class="mb-2 flex items-center gap-1.5 text-sm font-semibold text-destructive"><%= lucide_icon("syringe", css_class: "size-4") %> <%= t("calendar.show.overdue_vaccinations_heading") %></h2>
-    <ul class="space-y-1 text-sm">
+  <%= render(Ui::AlertComponent.new(variant: :destructive, class_name: "mb-4")) do |alert| %>
+    <% alert.with_icon { lucide_icon("syringe", css_class: "size-4") } %>
+    <% alert.with_title { t("calendar.show.overdue_vaccinations_heading") } %>
+    <ul class="mt-2 space-y-1">
       <% overdue_vaccinations.each do |vaccination| %>
         <li>
           <%= link_to pet_path(vaccination.pet), class: "hover:underline" do %>
-            <%= vaccination.pet.name %> — <%= vaccination.name %>
-            <span class="text-destructive/70">— <%= t("calendar.show.overdue_since", date: l(vaccination.booster_on, format: :short)) %></span>
+            <span class="text-primary"><%= vaccination.pet.name %> — <%= vaccination.name %></span>
+            — <%= t("calendar.show.overdue_since", date: l(vaccination.booster_on, format: :short)) %>
           <% end %>
         </li>
       <% end %>
     </ul>
-  </div>
+  <% end %>
 <% end %>
 
 <% if local_assigns[:overdue_plant_care] && overdue_plant_care.any? %>
-  <div class="mb-4 rounded-lg border border-destructive/30 bg-destructive-subtle/40 p-3">
-    <h2 class="mb-2 flex items-center gap-1.5 text-sm font-semibold text-destructive"><%= lucide_icon("sprout", css_class: "size-4") %> <%= t("calendar.show.overdue_plant_care_heading") %></h2>
-    <ul class="space-y-1 text-sm">
+  <%= render(Ui::AlertComponent.new(variant: :destructive, class_name: "mb-4")) do |alert| %>
+    <% alert.with_icon { lucide_icon("sprout", css_class: "size-4") } %>
+    <% alert.with_title { t("calendar.show.overdue_plant_care_heading") } %>
+    <ul class="mt-2 space-y-1">
       <% overdue_plant_care.each do |task| %>
         <li>
           <%= link_to plant_path(task.plant), class: "hover:underline" do %>
-            <%= task.plant.name %> — <%= care_type_label(task.care_type) %>
-            <span class="text-destructive/70">— <%= t("calendar.show.overdue_since", date: l(task.next_due_on, format: :short)) %></span>
+            <span class="text-primary"><%= task.plant.name %> — <%= care_type_label(task.care_type) %></span>
+            — <%= t("calendar.show.overdue_since", date: l(task.next_due_on, format: :short)) %>
           <% end %>
         </li>
       <% end %>
     </ul>
-  </div>
+  <% end %>
 <% end %>
 
 <%

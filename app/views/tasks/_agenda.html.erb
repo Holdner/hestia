@@ -33,7 +33,7 @@
         <span class="text-xs text-subdued"><%= tasks.size %></span>
       </div>
 
-      <div id="tasks_agenda_<%= key %>" class="space-y-2">
+      <div id="tasks_agenda_<%= key %>" class="flex flex-col divide-y divide-primary rounded-lg border border-primary">
         <%= render partial: "tasks/task", collection: tasks, locals: { show_category: true, reorderable: false } %>
       </div>
     </section>

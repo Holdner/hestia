@@ -213,6 +213,12 @@ module DesignSystemRegistry
       related: %w[avatar tooltip]),
     Entry.new(slug: "badge", name: "Badge", category: CATEGORIES[3], component_class: Ui::BadgeComponent,
       description: "Étiquette compacte de statut ou de catégorie."),
+    Entry.new(slug: "filter-chip", name: "Filter Chip", category: CATEGORIES[3], component_class: Ui::FilterChipComponent,
+      description: "Un filtre d'une rangée de puces (étiquettes, dossiers, types) : le lien occupe toute la hauteur, avec pastille de couleur et actions optionnelles.",
+      usage: "Pour filtrer une liste, pas pour étiqueter une ligne : une étiquette qui ne mène nulle part est un Badge.\n" \
+        "La rangée de puces porte data-touch-target=\"compact\" : 32px de haut, actions à 24px (FilterChipComponent::ACTION_CLASSES), le plancher WCAG AA.\n" \
+        "Le filtre actif est plein et porte aria-current.",
+      related: %w[badge]),
     Entry.new(slug: "kbd", name: "Kbd", category: CATEGORIES[3], component_class: Ui::KbdComponent,
       description: "Représente une touche ou un raccourci clavier."),
     Entry.new(slug: "card", name: "Card", category: CATEGORIES[3], component_class: Ui::CardComponent,
@@ -230,7 +236,16 @@ module DesignSystemRegistry
     Entry.new(slug: "calendar", name: "Calendar", category: CATEGORIES[3], component_class: Ui::CalendarComponent,
       description: "Grille mensuelle de sélection de date, brique de base du Date Picker.", related: %w[date-picker]),
     Entry.new(slug: "progress", name: "Progress", category: CATEGORIES[3], component_class: Ui::ProgressComponent,
-      description: "Barre de progression déterminée par une valeur 0-100."),
+      description: "Jauge déterminée par une valeur 0-100, en pin : elle informe, elle ne demande pas d'action.",
+      related: %w[stat]),
+    Entry.new(slug: "stat", name: "Stat", category: CATEGORIES[3], component_class: Ui::StatComponent,
+      description: "Chiffre clé : un libellé, le montant en serif éditorial, et en option le chiffre d'appui en pin, un badge et une jauge.",
+      usage: "Le montant héros est la seule donnée en serif d'une vue, et il tient sur une ligne.\n" \
+        "Le chiffre d'appui (slot support) situe ce montant : « sur 1 600,00 € prévus · 12 jours restants ». " \
+        "Il est en pin parce qu'il informe sans demander d'action, jamais cliquable, jamais seul hors d'un Stat : " \
+        "un texte pin cliquable, c'est un lien (text-link), pas un chiffre d'appui.\n" \
+        "Stat n'a pas de conteneur : posez-le dans une Card ou directement sur la page, jamais une Card dans une Card.",
+      related: %w[card progress badge]),
     Entry.new(slug: "typography", name: "Typography", category: CATEGORIES[3],
       component_class: defined?(Ui::TypographyComponent) ? Ui::TypographyComponent : nil,
       description: "Échelle de titres et de texte (h1-h4, lead, large, small, muted, citation, code)."),
@@ -280,7 +295,7 @@ module DesignSystemRegistry
     # ── Marque ───────────────────────────────────────────────────────────
     Entry.new(slug: "greeting-header", name: "Greeting Header", category: CATEGORIES[6],
       component_class: defined?(Ui::GreetingHeaderComponent) ? Ui::GreetingHeaderComponent : nil,
-      description: "Salutation selon l'heure de la journée dans la police manuscrite, plus une ligne secondaire optionnelle. Ouvre le tableau de bord."),
+      description: "Date du jour en mono, puis salutation selon l'heure de la journée en serif éditorial, plus une ligne secondaire optionnelle. Ouvre le tableau de bord."),
     Entry.new(slug: "household-header", name: "Household Header", category: CATEGORIES[6],
       component_class: defined?(Ui::HouseholdHeaderComponent) ? Ui::HouseholdHeaderComponent : nil,
       description: "Carte d'identité du foyer : photo, nom, avatars des membres et action — une fois en haut du tableau de bord.",

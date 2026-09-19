@@ -1,0 +1,14 @@
+<div class="grid w-full max-w-2xl gap-4 sm:grid-cols-2">
+  <%= render(Ui::CardComponent.new) do %>
+    <%= render(Ui::StatComponent.new(label: "Budget d'août", value: "1 284,90 €")) do |stat| %>
+      <% stat.with_support { "sur 1 600,00 € prévus · 12 jours restants" } %>
+      <% stat.with_gauge { render(Ui::ProgressComponent.new(value: 80)) } %>
+    <% end %>
+  <% end %>
+  <%= render(Ui::CardComponent.new) do %>
+    <%= render(Ui::StatComponent.new(label: "Reste à vivre", value: "400 €")) do |stat| %>
+      <% stat.with_badge { render(Ui::BadgeComponent.new(variant: :success)) { "13 %" } } %>
+      <% stat.with_support { "après 1 700 € de charges" } %>
+    <% end %>
+  <% end %>
+</div>

@@ -5,7 +5,7 @@
 
   <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
     <h1 class="flex items-center gap-2 text-2xl font-semibold"><%= lucide_icon("users", css_class: "size-6") %> <%= t(".title") %></h1>
-    <div class="flex items-center gap-2">
+    <div class="flex flex-wrap items-center gap-2">
       <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: new_circle_membership_path)) { t(".join_circle") } %>
       <%= render(Ui::DialogComponent.new) do |dialog| %>
         <% dialog.with_trigger { render(Ui::ButtonComponent.new(variant: :default, size: :sm)) { t(".new_circle") } } %>

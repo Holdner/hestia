@@ -19,7 +19,7 @@
     <% else %>
       <%= render(Ui::EmptyComponent.new) { |empty| empty.with_description { t(".no_documents") } } %>
     <% end %>
-    <p class="text-sm"><%= link_to t(".manage_documents_link"), documents_path, class: "underline" %></p>
+    <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, icon: "file-text", href: documents_path)) { t(".manage_documents_link") } %>
   </section>
 
 </div>

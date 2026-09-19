@@ -67,4 +67,19 @@ class Ui::ItemComponentTest < ViewComponent::TestCase
 
     assert_selector "div.on-tone"
   end
+
+  test "truncates title and description by default, wraps them with truncate: false" do
+    render_inline(Ui::ItemComponent.new) do |item|
+      item.with_title { "Créer un foyer" }
+      item.with_description { "Vous serez l'administrateur" }
+    end
+    assert_selector "p.truncate", count: 2
+
+    render_inline(Ui::ItemComponent.new(truncate: false)) do |item|
+      item.with_title { "Créer un foyer" }
+      item.with_description { "Vous serez l'administrateur" }
+    end
+    refute_selector "p.truncate"
+    assert_selector "p.font-medium", text: "Créer un foyer"
+  end
 end

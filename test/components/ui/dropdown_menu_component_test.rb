@@ -31,4 +31,21 @@ class Ui::DropdownMenuComponentTest < ViewComponent::TestCase
     assert_selector "[data-dropdown-menu-target='panel']", visible: false
     refute_selector "[data-dropdown-menu-target='item']", visible: false
   end
+
+  test "takes a block of server actions, each a keyboard-reachable menu item" do
+    render_in_view_context do
+      render(Ui::DropdownMenuComponent.new) do |menu|
+        menu.with_trigger { "More" }
+        safe_join([
+          button_to("Archive", "/notes/1/archive", method: :patch, **Ui::DropdownMenuComponent.item_options),
+          Ui::DropdownMenuComponent.separator,
+          button_to("Delete", "/notes/1", method: :delete, **Ui::DropdownMenuComponent.item_options(destructive: true))
+        ])
+      end
+    end
+
+    assert_selector "form[action='/notes/1/archive'] button[role='menuitem'][data-dropdown-menu-target='item'][tabindex='-1']", text: "Archive", visible: false
+    assert_selector "div[role='separator']", visible: false
+    assert_selector "button.text-destructive[role='menuitem']", text: "Delete", visible: false
+  end
 end

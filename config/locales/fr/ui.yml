@@ -2,6 +2,11 @@ fr:
   ui:
     dialog:
       close_aria: Fermer
+    theme_toggle:
+      group_aria: "Thème"
+      light: "Clair"
+      dark: "Sombre"
+      system: "Système"
     breadcrumb:
       nav_aria: "Fil d'Ariane"
     pagination:

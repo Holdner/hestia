@@ -10,13 +10,17 @@
       # the padding back on the grid, and lifts a row whose content is shorter
       # than a line of text (an icon-only row) to 44px rather than leaving it
       # under the 36px touch-target floor.
-      "on-tone flex min-h-11 items-center gap-3 rounded-md py-2 px-3 transition-colors",
+      "on-tone flex min-h-11 flex-wrap items-center gap-x-3 gap-y-2 rounded-md py-2 px-3 transition-colors",
       @active ? "bg-item-active" : (@href ? "hover:bg-surface-hover cursor-pointer" : nil)
     )) do %>
   <% if leading? %><div class="shrink-0"><%= leading %></div><% end %>
-  <div class="flex-1 min-w-0">
-    <% if title? %><p class="text-base <%= @active ? "font-semibold" : "font-medium" %> text-primary truncate"><%= title %></p><% end %>
-    <% if description? %><p class="text-sm text-secondary truncate"><%= description %></p><% end %>
+  <%# grow + basis-40 rather than flex-1: with a basis of 0 the text gave way
+      to any number of trailing actions, down to an empty column on a phone
+      (the fridge rows showed no name at all). Now the text keeps 10rem and the
+      trailing block wraps under it, pushed right by ml-auto. %>
+  <div class="min-w-0 grow basis-40">
+    <% if title? %><p class="<%= cn("text-base text-primary", @active ? "font-semibold" : "font-medium", @truncate && "truncate") %>"><%= title %></p><% end %>
+    <% if description? %><p class="<%= cn("text-sm text-secondary", @truncate && "truncate") %>"><%= description %></p><% end %>
   </div>
-  <% if trailing? %><div class="shrink-0"><%= trailing %></div><% end %>
+  <% if trailing? %><div class="ml-auto shrink-0"><%= trailing %></div><% end %>
 <% end %>

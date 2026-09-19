@@ -49,7 +49,7 @@ module Ui
     end
 
     def call
-      classes = base_classes
+      classes = base_classes(justify: own_justify?(@html_options[:class]) ? nil : "justify-center")
 
       if @href
         link_to @href, **@html_options, class: cn(classes, @html_options[:class]) do
@@ -62,10 +62,25 @@ module Ui
       end
     end
 
+    # A label centres by default, so a w-full button doesn't leave it hugging
+    # the left edge. cn only concatenates, it doesn't resolve conflicting
+    # utilities: a caller's own justify-* (the search trigger's justify-start)
+    # therefore replaces the default rather than sitting beside it, where the
+    # winner would be whichever Tailwind happened to emit last.
+    def self.own_justify?(class_list)
+      class_list.to_s.split.any? { |token| token.start_with?("justify-") }
+    end
+
     private
-      def base_classes
+      def own_justify?(class_list) = self.class.own_justify?(class_list)
+
+      def base_classes(justify: "justify-center")
         cn(
-          "inline-flex items-center rounded-md font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-focus",
+          # whitespace-nowrap: a fixed-height button whose label wraps spills
+          # it over its own border ("Nouveau / contact" in a 36px box). The
+          # container around the buttons wraps instead.
+          "inline-flex items-center whitespace-nowrap rounded-md font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-focus",
+          justify,
           # A button given `href:` renders as an anchor, and the global
           # `a:hover { text-decoration: underline }` in application.tailwind.css
           # then underlines its label on hover — which no button should do. The

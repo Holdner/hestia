@@ -290,6 +290,13 @@ fr:
           - "Api::V1::BaseController épingle Current.household à households.first, donc un membre de deux foyers ne peut jamais atteindre le second — et les fixtures, un membership par utilisateur, ne peuvent pas l'attraper"
           - "Limitation de débit sur les jetons (les trois points d'entrée d'authentification du web en ont une, l'API aucune), clés d'idempotence pour les écritures rejouées, et un décompte total sur les réponses paginées"
           - "Des écritures au-delà de la poignée qui existe : la surface est essentiellement en lecture, sans update ni destroy nulle part"
+      mcp_server:
+        title: "Serveur MCP pour les assistants IA"
+        items:
+          - "Un serveur MCP (Model Context Protocol) pour que Claude, ChatGPT ou tout assistant compatible lise et agisse sur le foyer : courses, tâches, calendrier et frigo exposés comme outils, en réutilisant l'authentification par jeton et le filtrage par module de l'API api/v1 plutôt qu'un chemin parallèle"
+          - "Des jetons à portée limitée : un ApiToken donne aujourd'hui tous les droits de son utilisateur, en lecture comme en écriture, sur tous les modules. Il faut pouvoir confier à un assistant un jeton en lecture seule, ou restreint à quelques modules"
+          - "Chaque outil d'écriture déclaré comme tel, pour que l'assistant demande confirmation avant d'agir, et les données Bien-être d'un autre membre hors d'atteinte, comme pour Hest.AI"
+          - "Vient après « L'API traitée comme un produit » : sans description OpenAPI ni correctif du foyer épinglé à households.first, chaque outil redécrirait la même surface à la main"
       notifications_automation:
         title: "Notifications et automatisation sortante"
         items:

@@ -9,10 +9,11 @@
   </p>
 
   <div class="mt-8 flex flex-wrap gap-3">
-    <%= link_to "Couleurs", design_system_colors_path, class: "rounded-md border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-surface-hover transition-colors" %>
-    <%= link_to "Typographie", design_system_typography_path, class: "rounded-md border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-surface-hover transition-colors" %>
-    <%= link_to "Icônes", design_system_icons_path, class: "rounded-md border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-surface-hover transition-colors" %>
-    <%= link_to "Illustrations", design_system_illustrations_path, class: "rounded-md border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-surface-hover transition-colors" %>
+    <% [ [ "Couleurs", design_system_colors_path ], [ "Typographie", design_system_typography_path ],
+         [ "Icônes", design_system_icons_path ], [ "Illustrations", design_system_illustrations_path ],
+         [ "Matière", design_system_materials_path ] ].each do |label, path| %>
+      <%= render(Ui::ButtonComponent.new(variant: :outline, href: path)) { label } %>
+    <% end %>
   </div>
 
   <div class="mt-12 space-y-10">

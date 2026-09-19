@@ -27,6 +27,8 @@ en:
       weekday_numeric: "%a %m/%d"
       # August 2026
       month_year: "%B %Y"
+      # Wednesday, August 12
+      weekday_long: "%A, %B %-d"
   time:
     formats:
       default: "%a, %d %b %Y %H:%M:%S %z"

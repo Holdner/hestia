@@ -2,7 +2,7 @@
 // hand-edited token source. Mechanical transform — never edit the output.
 //
 // ASSUMPTION: app/assets/stylesheets/application.tailwind.css keeps its three
-// top-level blocks (`@theme {`, `:root {`, `.dark {`) closed by a `}` at column 0.
+// top-level blocks (`@theme static {`, `:root {`, `.dark {`) closed by a `}` at column 0.
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -17,7 +17,7 @@ const block = (opener) => {
   return src.slice(start + opener.length, end).trimEnd();
 };
 
-const theme = block("@theme {");
+const theme = block("@theme static {");
 const root = block(":root {");
 const dark = block(".dark {");
 

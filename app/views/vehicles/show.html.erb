@@ -4,7 +4,7 @@
 <div class="mt-10 max-w-5xl mx-auto px-4">
   <div class="mb-4"><%= module_breadcrumb(:vehicles, [ @vehicle.name, nil ], module_path: vehicles_path) %></div>
 
-  <header class="mb-4 flex items-start justify-between gap-4">
+  <header class="mb-4 flex flex-wrap items-start justify-between gap-4">
     <div class="flex items-start gap-4">
       <% if @vehicle.photo.attached? %>
         <div class="size-16 shrink-0">
@@ -29,10 +29,10 @@
         </p>
       </div>
     </div>
-    <div class="flex gap-2 text-sm">
-      <%= link_to t(".edit"), edit_vehicle_path(@vehicle), class: "underline" %>
-      <%= button_to t(".delete"), vehicle_path(@vehicle), method: :delete,
-            form: { data: { turbo_confirm: t(".delete_confirm") } }, class: "cursor-pointer text-destructive underline" %>
+    <div class="flex items-center gap-2">
+      <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, href: edit_vehicle_path(@vehicle))) { t(".edit") } %>
+      <%= render(Ui::ButtonToComponent.new(vehicle_path(@vehicle), method: :delete, variant: :destructive, size: :sm,
+            html_options: { form: { data: { turbo_confirm: t(".delete_confirm") } } })) { t(".delete") } %>
     </div>
   </header>
 
@@ -97,7 +97,7 @@
     <% else %>
       <%= render(Ui::EmptyComponent.new) { |empty| empty.with_description { t(".no_documents") } } %>
     <% end %>
-    <p class="text-sm"><%= link_to t(".manage_documents_link"), documents_path, class: "underline" %></p>
+    <%= render(Ui::ButtonComponent.new(variant: :outline, size: :sm, icon: "file-text", href: documents_path)) { t(".manage_documents_link") } %>
   </section>
 
 </div>

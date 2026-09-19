@@ -27,7 +27,7 @@
     <% if @readings.any? %>
       <ul class="mb-4 divide-y divide-primary text-sm">
         <% @readings.each do |reading| %>
-          <li class="py-2"><%= l(reading.measured_on, format: :numeric) %> · <%= measure_type_label(reading.measure_type) %> : <%= reading.value.to_s.sub(/\.0+\z/, "") %></li>
+          <li class="py-2"><%= l(reading.measured_on, format: :numeric) %> · <%= measure_type_label(reading.measure_type) %> : <%= decimal(reading.value) %></li>
         <% end %>
       </ul>
       <% if @readings_total_pages > 1 %>

@@ -7,13 +7,20 @@
     <% end %>
   </div>
 
-  <div class="flex items-center gap-4 px-5 py-4">
-    <div class="flex-1 min-w-0">
-      <h2 class="text-[22px] font-semibold tracking-[-0.02em] text-primary truncate"><%= @name %></h2>
+  <%# Wraps rather than squeezes: on a phone the name used to be crushed to
+      "F…" by the avatars and the action beside it. The name keeps at least
+      basis-40 and the avatars + action drop, together, to a line of their own. %>
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-3 px-5 py-4">
+    <div class="min-w-0 grow basis-40">
+      <h2 class="text-xl font-semibold tracking-[-0.02em] text-primary truncate"><%= @name %></h2>
       <% if @note %><p class="text-sm text-secondary mt-0.5"><%= @note %></p><% end %>
     </div>
 
-    <% if @members.any? %><%= render Ui::AvatarGroupComponent.new(members: @members, max: 5) %><% end %>
-    <% if action? %><%= action %><% end %>
+    <% if @members.any? || action? %>
+      <div class="flex items-center gap-4">
+        <% if @members.any? %><%= render Ui::AvatarGroupComponent.new(members: @members, max: 5) %><% end %>
+        <% if action? %><%= action %><% end %>
+      </div>
+    <% end %>
   </div>
 </div>

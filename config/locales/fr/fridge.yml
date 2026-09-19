@@ -52,6 +52,7 @@ fr:
       delete_aria: "Supprimer"
       delete_confirm: "Supprimer cet aliment ?"
     edit:
+      heading: "Modifier l'aliment"
       name_label: "Aliment"
       quantity_label: "Qté"
       unit_label: "Unité"

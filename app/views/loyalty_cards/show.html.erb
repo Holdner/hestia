@@ -1,14 +1,16 @@
 <% content_for :title, @card.name %>
 
-<div class="mx-auto mt-10 max-w-md px-4 text-center">
-  <div class="mb-4 text-left"><%= module_breadcrumb(:loyalty, [ @card.name, nil ], module_path: loyalty_cards_path) %></div>
+<%# Title and actions aligned left like every other page; only the code
+    itself, the thing held up to a scanner, stays centred in its card. %>
+<div class="mx-auto mt-10 max-w-md px-4">
+  <div class="mb-4"><%= module_breadcrumb(:loyalty, [ @card.name, nil ], module_path: loyalty_cards_path) %></div>
 
-  <h1 class="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold">
+  <h1 class="mb-6 flex items-center gap-2 text-2xl font-semibold">
     <% if @card.loyalty_brand&.logo_emoji.present? %><span aria-hidden="true"><%= @card.loyalty_brand.logo_emoji %></span><% end %>
     <%= @card.name %>
   </h1>
 
-  <%= render(Ui::CardComponent.new) do %>
+  <%= render(Ui::CardComponent.new(class_name: "text-center")) do %>
     <p class="mb-4 text-xs uppercase tracking-wide text-subdued">
       <%= @card.code_format == "qrcode" ? t(".qrcode_label") : t(".barcode_label") %> <%= t(".present_at_checkout") %>
     </p>
@@ -26,7 +28,7 @@
     <% end %>
   <% end %>
 
-  <div class="mt-6 flex flex-wrap justify-center gap-3 text-sm">
+  <div class="mt-6 flex flex-wrap gap-3 text-sm">
     <%= render(Ui::ButtonComponent.new(variant: :default, href: kiosk_loyalty_card_path(@card))) { t(".kiosk_link") } %>
     <%= render(Ui::ButtonComponent.new(variant: :outline, href: edit_loyalty_card_path(@card))) { t(".edit") } %>
   </div>

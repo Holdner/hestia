@@ -4,7 +4,7 @@
 <div class="mt-10 max-w-5xl mx-auto px-4">
   <div class="mb-4"><%= module_breadcrumb(:baby, [ @baby.name, nil ], module_path: baby_profiles_path) %></div>
 
-  <header class="mb-2 flex items-start justify-between">
+  <header class="mb-2 flex flex-wrap items-start justify-between gap-3">
     <div>
       <h1 class="flex items-center gap-2 text-2xl font-semibold"><%= lucide_icon("baby", css_class: "size-6") %> <%= @baby.name %></h1>
       <% if @baby.born_on %>

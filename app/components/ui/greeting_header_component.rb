@@ -1,7 +1,8 @@
 module Ui
   # Dashboard opening line — a time-of-day greeting in the editorial serif
-  # accent (see .greeting in application.tailwind.css), plus an optional
-  # situational lead line underneath. One line at a time, never a data view.
+  # accent (see .greeting in application.tailwind.css), under today's date as a
+  # mono eyebrow, plus an optional situational lead line underneath. One line
+  # at a time, never a data view.
   class GreetingHeaderComponent < ApplicationComponent
     GREETING_KEYS = {
       (0..4) => :night,
@@ -12,10 +13,11 @@ module Ui
       (22..23) => :late_evening
     }.freeze
 
-    def initialize(name:, lead: nil, hour: nil, greeting: nil, class_name: nil)
+    def initialize(name:, lead: nil, hour: nil, greeting: nil, date: nil, class_name: nil)
       @name = name
       @lead = lead
       @hour = hour || Time.current.hour
+      @date = date || Date.current
       @greeting = greeting || default_greeting
       @class_name = class_name
     end

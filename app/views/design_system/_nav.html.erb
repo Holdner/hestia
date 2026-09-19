@@ -14,6 +14,8 @@
   <%= nav_link.call(design_system_colors_path, "Couleurs", request.path == design_system_colors_path) %>
   <%= nav_link.call(design_system_typography_path, "Typographie", request.path == design_system_typography_path) %>
   <%= nav_link.call(design_system_icons_path, "Icônes", request.path == design_system_icons_path) %>
+  <%= nav_link.call(design_system_illustrations_path, "Illustrations", request.path == design_system_illustrations_path) %>
+  <%= nav_link.call(design_system_materials_path, "Matière", request.path == design_system_materials_path) %>
 </div>
 
 <% @categories.each do |category, entries| %>

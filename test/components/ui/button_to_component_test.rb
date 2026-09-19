@@ -22,4 +22,13 @@ class Ui::ButtonToComponentTest < ViewComponent::TestCase
     assert_selector "form[data-turbo-confirm='Sure?']"
     assert_selector "button.bg-button-destructive", text: "Delete"
   end
+
+  test "centres its label unless the caller sets its own justify-*" do
+    render_inline(Ui::ButtonToComponent.new("/session", method: :delete)) { "Sign out" }
+    assert_selector "button.justify-center"
+
+    render_inline(Ui::ButtonToComponent.new("/session", method: :delete, html_options: { class: "w-full justify-start" })) { "Sign out" }
+    assert_selector "button.justify-start"
+    refute_selector "button.justify-center"
+  end
 end

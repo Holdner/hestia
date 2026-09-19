@@ -108,14 +108,16 @@ class ColorContrastTest < ActiveSupport::TestCase
       scope_body(scope)[/#{Regexp.escape(name)}:\s*([^;]+);/, 1]&.strip
     end
 
-    SCOPE_SELECTORS = { root: ":root", dark: ".dark", theme: "@theme" }.freeze
+    # @theme may carry a modifier (`@theme static`); :root and .dark never do.
+    SCOPE_SELECTORS = { root: ":root", dark: ".dark", theme: "@theme(?:\\s+static)?" }.freeze
 
     def scope_body(scope)
       @css ||= File.read(CSS_PATH)
       @scope_bodies ||= {}
       @scope_bodies[scope] ||= begin
         selector = SCOPE_SELECTORS.fetch(scope)
-        match = @css.match(/^#{Regexp.escape(selector)}\s*\{(.*?)^\}/m)
+        pattern = scope == :theme ? selector : Regexp.escape(selector)
+        match = @css.match(/^#{pattern}\s*\{(.*?)^\}/m)
         raise "#{selector} block not found in #{CSS_PATH}" unless match
 
         match[1]

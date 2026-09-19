@@ -14,7 +14,8 @@ module Ui
 
     def call
       classes = cn(
-        "inline-flex cursor-pointer items-center rounded-md font-medium transition-colors",
+        "inline-flex cursor-pointer items-center whitespace-nowrap rounded-md font-medium transition-colors",
+        (ButtonComponent.own_justify?(@html_options[:class]) ? nil : "justify-center"),
         "disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-focus",
         ButtonComponent::VARIANTS.fetch(@variant),
         ButtonComponent::SIZES.fetch(@size)

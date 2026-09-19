@@ -1,5 +1,8 @@
+<%# Padding only: the container draws the hairlines, the agenda's outlined
+    list and the board column's card alike (rule 3, and no card inside the
+    column card, rule 4). A broadcast drops this same partial into either. %>
 <%= tag.div id: dom_id(task), data: { sortable_id: task.id },
-      class: "rounded-lg border border-primary bg-container p-3 #{'opacity-60' if task.done}" do %>
+      class: "px-3 py-3 #{'opacity-60' if task.done}" do %>
   <div class="flex items-start gap-2">
     <%# Only where a position is a rank the view can actually edit — the board's
         category columns. The agenda mixes categories inside one due-date bucket

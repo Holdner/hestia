@@ -8,12 +8,22 @@
     <% @data.each do |label, _| %><span><%= label %></span><% end %>
   </div>
 <% else %>
+  <%# Bars and labels are two rows sharing one column grid (same flex-1 and
+      gap), not one column each holding both. A label used to sit inside its
+      bar's 32px column, so « Alimentation » spilled over its neighbours, and
+      the bar's height was a share of a box that also held the label. %>
   <div class="flex items-end gap-3" style="height: <%= @height %>px">
     <% @data.each_with_index do |(label, value), index| %>
-      <div class="flex flex-1 max-w-8 flex-col items-center justify-end gap-2 h-full">
-        <div class="w-full rounded-t-sm <%= COLORS[index % COLORS.size] %>" style="height: <%= (value / @max * 100).round(2) %>%" role="img" aria-label="<%= label %> : <%= value %>"></div>
-        <span class="text-xs text-secondary"><%= label %></span>
+      <div class="flex h-full min-w-0 flex-1 flex-col items-center justify-end">
+        <div class="w-full max-w-12 rounded-t-sm <%= bar_color(index) %>" style="height: <%= (value / @max * 100).round(2) %>%" role="img" aria-label="<%= label %> : <%= value %>"></div>
       </div>
     <% end %>
   </div>
+  <% if @data.any? %>
+    <div class="mt-2 flex gap-3">
+      <% @data.each do |label, _| %>
+        <span class="min-w-0 flex-1 truncate text-center text-xs text-secondary" title="<%= label %>"><%= label %></span>
+      <% end %>
+    </div>
+  <% end %>
 <% end %>

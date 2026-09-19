@@ -35,22 +35,21 @@
         <%= render(Ui::CardComponent.new) do |card| %>
           <% card.with_title { t(".theme_heading") } %>
           <% card.with_description { t(".theme_description") } %>
-          <%= render Ui::ThemeToggleComponent.new %>
+          <%= render Ui::ThemeToggleComponent.new(variant: :segmented) %>
         <% end %>
 
         <%= render(Ui::CardComponent.new) do |card| %>
           <% card.with_title { t(".time_zone_heading") } %>
+          <%# The explanation is the card's description, like the cards around
+              it; as the field's label it was a bold paragraph squeezed into a
+              column beside the button. %>
+          <% card.with_description { t(".time_zone_label") } %>
           <%= form_with model: @household, url: household_path(@household), method: :patch do |form| %>
-            <div class="flex items-end gap-3">
-              <div class="flex-1">
-                <%= render(Ui::FieldComponent.new(id: "household_time_zone")) do |field| %>
-                  <% field.with_label { t(".time_zone_label") } %>
-                  <% field.with_control do %>
-                    <%= render Ui::NativeSelectComponent.new(name: "household[time_zone]", selected: @household.time_zone,
-                          options: ActiveSupport::TimeZone.all.map { |zone| [ zone.to_s, zone.name ] },
-                          html_options: { id: "household_time_zone" }) %>
-                  <% end %>
-                <% end %>
+            <div class="flex flex-wrap items-end gap-3">
+              <div class="min-w-0 grow basis-48">
+                <%= render Ui::NativeSelectComponent.new(name: "household[time_zone]", selected: @household.time_zone,
+                      options: ActiveSupport::TimeZone.all.map { |zone| [ zone.to_s, zone.name ] },
+                      html_options: { id: "household_time_zone", "aria-label": t(".time_zone_heading") }) %>
               </div>
               <%= render(Ui::ButtonComponent.new(type: "submit")) { t(".time_zone_submit") } %>
             </div>

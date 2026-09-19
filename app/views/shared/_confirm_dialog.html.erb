@@ -9,7 +9,14 @@
     Deliberately mirrors AlertDialogComponent's markup — same <dialog>, same
     center POSITION_CLASSES, same footer, role="alertdialog" — because it is
     the same thing, only driven from JS instead of from a trigger slot. %>
-<div data-controller="confirm">
+<%# A form may name its own accept button (data-turbo-confirm-label) and ask
+    for a neutral one (data-turbo-confirm-variant="default"): "Convertir en
+    tâche" is a confirmation, not a destruction, and a red "Confirmer" on it
+    said the wrong thing. Without them it stays the destructive default. %>
+<div data-controller="confirm"
+  data-confirm-accept-label-value="<%= t("ui.alert_dialog.confirm_label") %>"
+  data-confirm-destructive-class-value="<%= Ui::ButtonComponent.classes(variant: :destructive) %>"
+  data-confirm-default-class-value="<%= Ui::ButtonComponent.classes(variant: :default) %>">
   <%# id, so page-level tests counting their own alert dialogs can exclude the
       one the layout mounts on every page. %>
   <%# Named and described by its own heading and message: role="alertdialog" is
