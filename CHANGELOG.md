@@ -45,6 +45,11 @@ survived that check.
 - `force_ssl` / `assume_ssl` restored behind `FORCE_SSL`, so a
   reverse-proxied deployment can enable HSTS without breaking plain-HTTP
   access on a home network.
+- **`yarn audit` clean again.** `@tailwindcss/cli` pins `@parcel/watcher`
+  2.5.1, which pulls `braces` through `micromatch` (GHSA-vfj7-8cjw-p6xm, no
+  patched release). A `resolutions` entry lifts it to 2.6.0, which switched to
+  `picomatch` and drops `braces` from the tree. Remove it once Tailwind ships
+  with 2.6.
 
 ### Performance
 

@@ -22,5 +22,8 @@
     "globals": "^17.7.0",
     "lucide-static": "^1.23.0",
     "puppeteer": "^25.4.0"
+  },
+  "resolutions": {
+    "@parcel/watcher": "^2.6.0"
   }
 }
