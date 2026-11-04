@@ -59,6 +59,10 @@ survived that check.
   GHSA-g3hv-75wg-m249 is only patched in 11: a `resolutions` entry lifts it to
   11, whose removed APIs (`makeRe`, `matchOne`, `Minimatch#regexp`) ESLint does
   not call. Remove it once ESLint depends on minimatch 11.
+  `package-lock.json`, which nothing here installs from but GitHub's
+  Dependabot alerts still scan, had missed this fix and the earlier ones
+  (#103 to #105): `overrides` now mirror both `resolutions`, and it carries the
+  same patched versions as `yarn.lock`.
 
 ### Performance
 
