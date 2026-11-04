@@ -50,6 +50,15 @@ survived that check.
   patched release). A `resolutions` entry lifts it to 2.6.0, which switched to
   `picomatch` and drops `braces` from the tree. Remove it once Tailwind ships
   with 2.6.
+- **`bundler-audit` and `yarn audit` clean again.** Advisories published after
+  the last green run turned `scan_ruby` and `scan_js` red on every branch.
+  Patch bumps for rack 3.2.8, nokogiri 1.19.7, loofah 2.25.3,
+  rails-html-sanitizer 1.7.2, addressable 2.9.2 and net-ssh 7.3.8 (through
+  Kamal). Puppeteer 25.16 moves `chromium-bidi` to zod 4
+  (GHSA-mrhx-c7xc-m3w5). ESLint still requires minimatch 10, while
+  GHSA-g3hv-75wg-m249 is only patched in 11: a `resolutions` entry lifts it to
+  11, whose removed APIs (`makeRe`, `matchOne`, `Minimatch#regexp`) ESLint does
+  not call. Remove it once ESLint depends on minimatch 11.
 
 ### Performance
 
