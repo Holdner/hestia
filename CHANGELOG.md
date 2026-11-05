@@ -63,6 +63,16 @@ survived that check.
   Dependabot alerts still scan, had missed this fix and the earlier ones
   (#103 to #105): `overrides` now mirror both `resolutions`, and it carries the
   same patched versions as `yarn.lock`.
+- **Rails 8.1.4.1**, the security release of 2026-11-04 (21 advisories
+  against 8.1.4). The one that reaches Hestia is GHSA-2gff-2mmg-m73p: since
+  8.1.0, `request.remote_ip` honours a client-supplied `Forwarded` header over
+  the proxy's `X-Forwarded-For`, so a forged header escaped the `rate_limit`
+  on sign-in, sign-up and password reset, which key on the client address.
+  Rails now raises `IpSpoofAttackError` when the two headers disagree: a
+  reverse proxy that reports the client differently in each would see that
+  error. The Critical Active Storage one (GHSA-f3w6-w445-fwh9) targets
+  ImageMagick, which Hestia does not use (variants and analysis go through
+  libvips).
 
 ### Performance
 
